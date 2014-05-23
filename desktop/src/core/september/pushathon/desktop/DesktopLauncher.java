@@ -7,7 +7,7 @@ import core.september.pushathon.PushathonGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "Drop";
+		config.title = "PushBox";
 		config.width = 800;
 		config.height = 480;
 		new LwjglApplication(new PushathonGame(), config);

@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 
-package core.september.foundation.util;
+package core.september.foundation;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;

@@ -21,6 +21,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import core.september.foundation.AbstractGameObject;
+
 public class CameraHelper {
 
 	private static final String TAG = CameraHelper.class.getName();

@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 
-package core.september.foundation.util;
+package core.september.foundation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
@@ -28,6 +28,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Disposable;
 
+import core.september.foundation.util.Constants;
+
 public class Assets implements Disposable, AssetErrorListener {
 
 	public static final String TAG = Assets.class.getName();
@@ -36,12 +38,15 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	private AssetManager assetManager;
 
-	public AssetFonts fonts;
-	public AssetBunny bunny;
-	public AssetRock rock;
-	public AssetGoldCoin goldCoin;
-	public AssetFeather feather;
-	public AssetLevelDecoration levelDecoration;
+//	public AssetFonts fonts;
+//	public AssetBunny bunny;
+//	public AssetRock rock;
+//	public AssetGoldCoin goldCoin;
+//	public AssetFeather feather;
+//	public AssetLevelDecoration levelDecoration;
+	
+	public AssetButton button;
+	public AssetBackground  background;
 
 	// singleton: prevent instantiation from other classes
 	private Assets () {
@@ -68,11 +73,23 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 	}
 
-	public class AssetBunny {
-		public final AtlasRegion head;
 
-		public AssetBunny (TextureAtlas atlas) {
-			head = atlas.findRegion("bunny_head");
+	
+	public class AssetButton {
+		public final AtlasRegion up;
+		public final AtlasRegion down;
+
+		public AssetButton (TextureAtlas atlas) {
+			up = atlas.findRegion("buttonup");
+			down = atlas.findRegion("buttondown");
+		}
+	}
+	
+	public class AssetBackground {
+		public final AtlasRegion background;
+
+		public AssetBackground (TextureAtlas atlas) {
+			background = atlas.findRegion("background");
 		}
 	}
 
@@ -142,20 +159,16 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 
 		// create game resource objects
-		fonts = new AssetFonts();
-		bunny = new AssetBunny(atlas);
-		rock = new AssetRock(atlas);
-		goldCoin = new AssetGoldCoin(atlas);
-		feather = new AssetFeather(atlas);
-		levelDecoration = new AssetLevelDecoration(atlas);
+		button = new AssetButton(atlas);
+		background = new AssetBackground(atlas);
 	}
 
 	@Override
 	public void dispose () {
 		assetManager.dispose();
-		fonts.defaultSmall.dispose();
-		fonts.defaultNormal.dispose();
-		fonts.defaultBig.dispose();
+//		fonts.defaultSmall.dispose();
+//		fonts.defaultNormal.dispose();
+//		fonts.defaultBig.dispose();
 	}
 
 	//@Override

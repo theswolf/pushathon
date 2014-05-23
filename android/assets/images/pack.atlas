@@ -1,0 +1,27 @@
+
+pack.png
+size: 802,958
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+background
+  rotate: false
+  xy: 2, 478
+  size: 800, 480
+  orig: 800, 480
+  offset: 0, 0
+  index: -1
+buttondown
+  rotate: false
+  xy: 2, 240
+  size: 238, 236
+  orig: 238, 236
+  offset: 0, 0
+  index: -1
+buttonup
+  rotate: false
+  xy: 2, 2
+  size: 238, 236
+  orig: 238, 236
+  offset: 0, 0
+  index: -1

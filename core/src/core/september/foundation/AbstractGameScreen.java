@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 
-package core.september.foundation.util;
+package core.september.foundation;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
