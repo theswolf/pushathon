@@ -90,5 +90,8 @@ public abstract class AbstractGameObject {
 	}
 
 	public abstract void render (SpriteBatch batch);
+	public boolean collide(Rectangle rect) {
+		return false;
+	}
 
 }

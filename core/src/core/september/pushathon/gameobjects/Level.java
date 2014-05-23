@@ -66,7 +66,8 @@ public class Level {
 	}
 
 	public void update (float deltaTime) {
-
+		box.update(deltaTime);
+		button.update(deltaTime);
 	}
 
 	public void render (SpriteBatch batch) {
