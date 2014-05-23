@@ -66,12 +66,20 @@ public class GameController extends InputAdapter {
 	
 	@Override
 	public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-		return false;
+		Rectangle touch = new Rectangle(
+				-Constants.VIEWPORT_WIDTH / 2 +screenX,
+				-Constants.VIEWPORT_HEIGHT /2 +screenY,
+				1.0f,
+				1.0f
+				);
+		level.touched = cameraHelper.getTarget().collide(touch);
+		return true;
 	}
 
 	@Override
 	public boolean touchUp (int screenX, int screenY, int pointer, int button) {
-		return false;
+		level.touched = false;
+		return true;
 	}
 
 	

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 
 import core.september.foundation.AbstractGameScreen;
+import core.september.foundation.util.Constants;
 import core.september.foundation.util.GamePreferences;
 import core.september.pushathon.workers.GameController;
 import core.september.pushathon.workers.GameRenderer;
@@ -16,6 +17,7 @@ public class GameScreen extends AbstractGameScreen {
 	private GameRenderer gameRenderer;
 
 	private boolean paused;
+
 
 	public GameScreen (Game game) {
 		super(game);
@@ -39,6 +41,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public void resize (int width, int height) {
+		super.resize(width, height);
 		gameRenderer.resize(width, height);
 	}
 

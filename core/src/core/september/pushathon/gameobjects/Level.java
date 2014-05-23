@@ -26,6 +26,8 @@ import com.badlogic.gdx.utils.Array;
 public class Level {
 
 	public static final String TAG = Level.class.getName();
+	
+	public boolean touched = false;
 
 	public enum BLOCK_TYPE {
 		EMPTY(0, 0, 0), // black
@@ -71,6 +73,7 @@ public class Level {
 	}
 
 	public void render (SpriteBatch batch) {
+		button.touched = touched;
 		box.render(batch);
 		button.render(batch);
 	}

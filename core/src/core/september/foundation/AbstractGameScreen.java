@@ -21,8 +21,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 
+import core.september.foundation.util.Constants;
+
 public abstract class AbstractGameScreen implements Screen {
 
+	public static float scaleX = 1;
+	public static float scaleY = 1;
+	
 	protected Game game;
 
 	public AbstractGameScreen (Game game) {
@@ -31,7 +36,10 @@ public abstract class AbstractGameScreen implements Screen {
 
 	public abstract void render (float deltaTime);
 
-	public abstract void resize (int width, int height);
+	public void resize (int width, int height) {
+		scaleX = width / Constants.VIEWPORT_WIDTH;
+		scaleY = height / Constants.VIEWPORT_HEIGHT;
+	}
 
 	public abstract void show ();
 
