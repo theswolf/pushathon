@@ -22,12 +22,13 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
+import core.september.foundation.Assets;
+
 
 public class Level {
 
 	public static final String TAG = Level.class.getName();
 	
-	public boolean touched = false;
 
 	public enum BLOCK_TYPE {
 		EMPTY(0, 0, 0), // black
@@ -61,21 +62,17 @@ public class Level {
 
 	private void init (String filename) {
 		// player character
-		box = new MetalBox();
-		button = new PushButton();
+		box = new MetalBox(0,0,Assets.instance.background.background.getRegionWidth(),Assets.instance.background.background.getRegionHeight());
+		button = new PushButton(0,0,Assets.instance.button.up.getRegionWidth(),Assets.instance.button.up.getRegionHeight());
 
 		Gdx.app.debug(TAG, "level '" + filename + "' loaded");
 	}
 
-	public void update (float deltaTime) {
-		box.update(deltaTime);
-		button.update(deltaTime);
-	}
 
-	public void render (SpriteBatch batch) {
-		button.touched = touched;
-		box.render(batch);
-		button.render(batch);
-	}
+//	public void render (SpriteBatch batch) {
+//		button.touched = touched;
+//		box.render(batch);
+//		button.render(batch);
+//	}
 
 }

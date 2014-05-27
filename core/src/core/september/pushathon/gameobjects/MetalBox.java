@@ -11,29 +11,27 @@ public class MetalBox extends AbstractGameObject{
 	
 	private TextureRegion back;
 
-	@Override
-	public void render(SpriteBatch batch) {
-		TextureRegion reg = null;
-		reg = back;
-//		batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
-//			rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(),
-//			viewDirection == VIEW_DIRECTION.LEFT, false);
-
-		// Reset color to white
-		batch.draw(back, - Constants.VIEWPORT_WIDTH / 2, - Constants.VIEWPORT_HEIGHT / 2);
-		batch.setColor(1, 1, 1, 1);
-		
-	}
+//	@Override
+//	public void render(SpriteBatch batch) {
+//		TextureRegion reg = null;
+//		reg = back;
+////		batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
+////			rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(),
+////			viewDirection == VIEW_DIRECTION.LEFT, false);
+//
+//		// Reset color to white
+//		batch.draw(back, - Constants.VIEWPORT_WIDTH / 2, - Constants.VIEWPORT_HEIGHT / 2);
+//		batch.setColor(1, 1, 1, 1);
+//		
+//	}
 	
-	public MetalBox() {
-		super();
+	public MetalBox(float x, float y, float width, float height) {
+		super(x,y,width,height);
 		init();
 	}
 	
 	public void init () {
-		dimension.set(1, 1);
 		back = Assets.instance.background.background;
-		origin.set(dimension.x / 2, dimension.y / 2);
 	}
 	
 	public void update (float deltaTime) {}

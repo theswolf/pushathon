@@ -17,15 +17,11 @@
 
 package core.september.pushathon.workers;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Rectangle;
 
-import core.september.foundation.util.CameraHelper;
-import core.september.foundation.util.Constants;
 import core.september.pushathon.gameobjects.Level;
 
 
@@ -35,11 +31,9 @@ public class GameController extends InputAdapter {
 
 	private Game game;
 	public Level level;
-
-	public CameraHelper cameraHelper;
+	
 
 	// Rectangles for collision detection
-	private Rectangle r1 = new Rectangle();
 	private Rectangle r2 = new Rectangle();
 
 	private float timeLeftGameOverDelay;
@@ -51,36 +45,18 @@ public class GameController extends InputAdapter {
 
 	private void init () {
 		Gdx.input.setInputProcessor(this);
-		cameraHelper = new CameraHelper();
 		initLevel();
 	}
 
 	private void initLevel () {
 		level = new Level("no file");
-		cameraHelper.setTarget(level.button);
 	}
 
 	public void update (float deltaTime) {
-		level.update(deltaTime);
+		//level.update(deltaTime);
 	}
 	
-	@Override
-	public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-		Rectangle touch = new Rectangle(
-				-Constants.VIEWPORT_WIDTH / 2 +screenX,
-				-Constants.VIEWPORT_HEIGHT /2 +screenY,
-				1.0f,
-				1.0f
-				);
-		level.touched = cameraHelper.getTarget().collide(touch);
-		return true;
-	}
-
-	@Override
-	public boolean touchUp (int screenX, int screenY, int pointer, int button) {
-		level.touched = false;
-		return true;
-	}
+	
 
 	
 
