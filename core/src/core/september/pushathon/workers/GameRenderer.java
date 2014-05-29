@@ -19,21 +19,20 @@ package core.september.pushathon.workers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
-import core.september.foundation.AbstractGameScreen;
 import core.september.foundation.Assets;
 import core.september.foundation.util.Constants;
-import core.september.foundation.util.GamePreferences;
 
 
 public class GameRenderer extends InputAdapter implements Disposable {
@@ -42,6 +41,7 @@ public class GameRenderer extends InputAdapter implements Disposable {
 
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
+	private ShapeRenderer shape;
 	private GameController gameController;
 	private Rectangle bounds,touchpoint,viewport;
 	public Vector2 touchBounds;
@@ -56,6 +56,7 @@ public class GameRenderer extends InputAdapter implements Disposable {
 
 	private void init () {
 		batch = new SpriteBatch();
+		shape = new ShapeRenderer();
 		camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
 		//camera.setToOrtho(true);
 		
@@ -77,12 +78,13 @@ public class GameRenderer extends InputAdapter implements Disposable {
         camera.update();
 
         // set viewport
-//        Gdx.gl.glViewport((int) viewport.x, (int) viewport.y,
-//                          (int) viewport.width, (int) viewport.height);
+        Gdx.gl.glViewport((int) viewport.x, (int) viewport.y,
+                          (int) viewport.width, (int) viewport.height);
 
         // clear previous frame
        
         renderGame(batch);
+        renderMask(shape);
         // DRAW EVERYTHING
     }
 
@@ -90,11 +92,25 @@ public class GameRenderer extends InputAdapter implements Disposable {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		//gameController.level.render(batch);
+		renderBack(batch);
 		renderButton(batch);
+		renderCounter(batch);
 		
 		
 		batch.end();
 	}
+	
+	private void renderMask (ShapeRenderer shape) {
+		shape.setProjectionMatrix(camera.combined);
+		shape.begin(ShapeType.Line);
+		shape.setColor(Color.DARK_GRAY);
+		Rectangle boundsD = gameController.level.counterD.getScaled(scale);
+		shape.rect(boundsD.x,boundsD.y,boundsD.width*2,boundsD.height);
+		Gdx.gl.glLineWidth(5);
+		shape.end();
+	}
+	
+	
 	
 	private boolean isTouched() {
 		if(touchBounds != null) {
@@ -107,8 +123,8 @@ public class GameRenderer extends InputAdapter implements Disposable {
 	}
 
 	private void renderButton(SpriteBatch batch) {
-		AtlasRegion  reg = null;
-		reg = isTouched() ? Assets.instance.button.down : Assets.instance.button.up;
+		TextureRegion  reg = null;
+		reg = isTouched() ? gameController.level.button.down :  gameController.level.button.up;
 //		batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
 //			rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(),
 //			viewDirection == VIEW_DIRECTION.LEFT, false);
@@ -126,6 +142,41 @@ public class GameRenderer extends InputAdapter implements Disposable {
 		batch.setColor(1, 1, 1, 1);
 	}
 	
+	private void renderBack(SpriteBatch batch) {
+
+		Rectangle bounds = gameController.level.box.getScaled(scale);
+		
+		batch.draw(gameController.level.box.back, 
+				bounds.x,
+				bounds.y,
+				bounds.width,
+				bounds.height
+				);
+		
+		batch.setColor(1, 1, 1, 1);
+	}
+	
+	private void renderCounter(SpriteBatch batch) {
+
+		Rectangle boundsU = gameController.level.counterU.getScaled(scale);
+		Rectangle boundsD = gameController.level.counterD.getScaled(scale);
+		
+		batch.draw(gameController.level.counterU.selected,
+				boundsU.x,
+				boundsU.y,
+				boundsU.width,
+				boundsU.height
+				);
+		
+		batch.draw(gameController.level.counterD.selected,
+				boundsD.x,
+				boundsD.y,
+				boundsD.width,
+				boundsD.height
+				);
+		
+		batch.setColor(1, 1, 1, 1);
+	}
 
 	public void resize (int width, int height) {
 
@@ -162,6 +213,7 @@ public class GameRenderer extends InputAdapter implements Disposable {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		shape.dispose();
 	}
 	
 	@Override

@@ -22,6 +22,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Rectangle;
 
+import core.september.foundation.util.Constants;
 import core.september.pushathon.gameobjects.Level;
 
 
@@ -31,7 +32,6 @@ public class GameController extends InputAdapter {
 
 	private Game game;
 	public Level level;
-	
 
 	// Rectangles for collision detection
 	private Rectangle r2 = new Rectangle();
@@ -53,7 +53,7 @@ public class GameController extends InputAdapter {
 	}
 
 	public void update (float deltaTime) {
-		//level.update(deltaTime);
+		level.update(deltaTime);
 	}
 	
 	

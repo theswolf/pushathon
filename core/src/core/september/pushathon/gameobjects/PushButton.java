@@ -11,9 +11,8 @@ import core.september.foundation.util.Constants;
 
 public class PushButton extends AbstractGameObject{
 	
-	private TextureRegion up;
-	private TextureRegion down;
-	private TextureRegion reg = null;
+	public TextureRegion up;
+	public TextureRegion down;
 	public boolean touched = false;
 	
 	//private static float scroll = 1.0;

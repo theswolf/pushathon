@@ -1,9 +1,79 @@
 
 pack.png
-size: 802,958
+size: 958,958
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+0
+  rotate: false
+  xy: 804, 843
+  size: 76, 115
+  orig: 76, 115
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 242, 361
+  size: 76, 115
+  orig: 76, 115
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 804, 726
+  size: 76, 115
+  orig: 76, 115
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 882, 843
+  size: 76, 115
+  orig: 76, 115
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 242, 244
+  size: 76, 115
+  orig: 76, 115
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 320, 361
+  size: 76, 115
+  orig: 76, 115
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 804, 609
+  size: 76, 115
+  orig: 76, 115
+  offset: 0, 0
+  index: -1
+7
+  rotate: false
+  xy: 882, 726
+  size: 76, 115
+  orig: 76, 115
+  offset: 0, 0
+  index: -1
+8
+  rotate: false
+  xy: 242, 127
+  size: 76, 115
+  orig: 76, 115
+  offset: 0, 0
+  index: -1
+9
+  rotate: false
+  xy: 320, 244
+  size: 76, 115
+  orig: 76, 115
+  offset: 0, 0
+  index: -1
 background
   rotate: false
   xy: 2, 478
@@ -13,7 +83,7 @@ background
   index: -1
 buttondown
   rotate: false
-  xy: 2, 240
+  xy: 4, 240
   size: 238, 236
   orig: 238, 236
   offset: 0, 0
@@ -23,5 +93,12 @@ buttonup
   xy: 2, 2
   size: 238, 236
   orig: 238, 236
+  offset: 0, 0
+  index: -1
+off
+  rotate: false
+  xy: 398, 361
+  size: 76, 115
+  orig: 76, 115
   offset: 0, 0
   index: -1

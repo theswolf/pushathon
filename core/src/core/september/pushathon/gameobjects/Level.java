@@ -18,11 +18,10 @@
 package core.september.pushathon.gameobjects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.math.Rectangle;
 
 import core.september.foundation.Assets;
+import core.september.foundation.util.Constants;
 
 
 public class Level {
@@ -55,6 +54,8 @@ public class Level {
 	// player character
 	public PushButton button;
 	public MetalBox box;
+	public Counter counterD;
+	public Counter counterU;
 
 	public Level (String filename) {
 		init(filename);
@@ -63,8 +64,26 @@ public class Level {
 	private void init (String filename) {
 		// player character
 		box = new MetalBox(0,0,Assets.instance.background.background.getRegionWidth(),Assets.instance.background.background.getRegionHeight());
-		button = new PushButton(0,0,Assets.instance.button.up.getRegionWidth(),Assets.instance.button.up.getRegionHeight());
+		button = new PushButton(
+				(Constants.VIEWPORT_WIDTH - Assets.instance.button.up.getRegionWidth())/2,
+				(Constants.VIEWPORT_HEIGHT - Assets.instance.button.up.getRegionHeight())/2,
+				Assets.instance.button.up.getRegionWidth()
+				,Assets.instance.button.up.getRegionHeight());
 
+		counterU = new Counter(
+				Constants.VIEWPORT_WIDTH - Assets.instance.countdown.off.getRegionWidth() -20,
+				Constants.VIEWPORT_HEIGHT - Assets.instance.countdown.off.getRegionHeight() -20,
+				Assets.instance.countdown.off.getRegionWidth()
+				,Assets.instance.countdown.off.getRegionHeight()
+				,1);
+		Rectangle square = counterU.getScaled(1f);
+		counterD = new Counter(
+				square.x - Assets.instance.countdown.off.getRegionWidth(),
+				square.y, 
+				square.width, 
+				square.height,
+				10);
+		
 		Gdx.app.debug(TAG, "level '" + filename + "' loaded");
 	}
 
@@ -74,5 +93,10 @@ public class Level {
 //		box.render(batch);
 //		button.render(batch);
 //	}
+	
+	public void update(float deltaTime) {
+		counterD.update(deltaTime);
+		counterU.update(deltaTime);
+	}
 
 }

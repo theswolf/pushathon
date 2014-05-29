@@ -56,5 +56,6 @@ public class Constants {
 //
 //	// Game preferences file
 	public static final String PREFERENCES = "pushathon.prefs";
+	public static final float TIME_LEFT = 21;
 
 }

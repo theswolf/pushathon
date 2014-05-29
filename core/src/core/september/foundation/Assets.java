@@ -47,6 +47,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	
 	public AssetButton button;
 	public AssetBackground  background;
+	public AssetCountDown countdown;
 
 	// singleton: prevent instantiation from other classes
 	private Assets () {
@@ -93,6 +94,33 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 	}
 
+	public class AssetCountDown {
+		public final AtlasRegion off;
+		public final AtlasRegion zero;
+		public final AtlasRegion uno;
+		public final AtlasRegion due;
+		public final AtlasRegion tre;
+		public final AtlasRegion quattro;
+		public final AtlasRegion cinque;
+		public final AtlasRegion sei;
+		public final AtlasRegion sette;
+		public final AtlasRegion otto;
+		public final AtlasRegion nove;
+
+		public AssetCountDown (TextureAtlas atlas) {
+			off = atlas.findRegion("off");
+			zero =   atlas.findRegion("0");
+			uno = atlas.findRegion("1");  
+			due = atlas.findRegion("2");    
+			tre  = atlas.findRegion("3");     
+			quattro  = atlas.findRegion("4"); 
+			cinque  = atlas.findRegion("5"); 
+			sei  = atlas.findRegion("6");  
+			sette  = atlas.findRegion("7");  
+			otto  = atlas.findRegion("8");    
+			nove  = atlas.findRegion("9");    
+		}
+	}
 
 	public void init (AssetManager assetManager) {
 		this.assetManager = assetManager;
@@ -118,6 +146,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		// create game resource objects
 		button = new AssetButton(atlas);
 		background = new AssetBackground(atlas);
+		countdown = new AssetCountDown(atlas);
 	}
 
 	@Override

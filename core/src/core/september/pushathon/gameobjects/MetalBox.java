@@ -9,7 +9,7 @@ import core.september.foundation.util.Constants;
 
 public class MetalBox extends AbstractGameObject{
 	
-	private TextureRegion back;
+	public TextureRegion back;
 
 //	@Override
 //	public void render(SpriteBatch batch) {
