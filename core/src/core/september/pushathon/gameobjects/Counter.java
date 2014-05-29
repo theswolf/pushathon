@@ -21,9 +21,9 @@ public class Counter extends AbstractGameObject{
 	private TextureRegion otto;
 	private TextureRegion nove;
 	public TextureRegion selected;
-	private int posDivider;
+	protected int posDivider;
 
-	private float elapsedTime = Constants.TIME_LEFT;
+	protected float elapsedTime = Constants.TIME_LEFT;
 //	@Override
 //	public void render(SpriteBatch batch) {
 //		TextureRegion reg = null;
@@ -60,7 +60,7 @@ public class Counter extends AbstractGameObject{
 	}
 	
 	
-	private void chooseSelected(int input) {
+	protected void chooseSelected(int input) {
 		switch (input) {
 		case 0:
 			selected = zero;

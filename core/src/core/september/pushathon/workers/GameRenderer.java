@@ -46,6 +46,7 @@ public class GameRenderer extends InputAdapter implements Disposable {
 	private Rectangle bounds,touchpoint,viewport;
 	public Vector2 touchBounds;
 	float scale = 1f;
+	boolean increasable = true;
 
 
 	public GameRenderer (GameController gameController) {
@@ -69,7 +70,8 @@ public class GameRenderer extends InputAdapter implements Disposable {
     public void render()
     {
         
-    	Gdx.gl.glClearColor(0x64 / 255.0f, 0x95 / 255.0f, 0xed / 255.0f, 0xff / 255.0f);
+    	//Gdx.gl.glClearColor(0x64 / 255.0f, 0x95 / 255.0f, 0xed / 255.0f, 0xff / 255.0f);
+    	Gdx.gl.glClearColor(Color.LIGHT_GRAY.r,Color.LIGHT_GRAY.g,Color.LIGHT_GRAY.b,Color.LIGHT_GRAY.a);
     	 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		// Clears the screen
     	// update camera
@@ -92,9 +94,10 @@ public class GameRenderer extends InputAdapter implements Disposable {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		//gameController.level.render(batch);
-		renderBack(batch);
+		//renderBack(batch);
 		renderButton(batch);
 		renderCounter(batch);
+		renderScorer(batch);
 		
 		
 		batch.end();
@@ -177,6 +180,43 @@ public class GameRenderer extends InputAdapter implements Disposable {
 		
 		batch.setColor(1, 1, 1, 1);
 	}
+	
+	private void renderScorer(SpriteBatch batch) {
+
+		Rectangle boundsU = gameController.level.scoreU.getScaled(scale);
+		Rectangle boundsD = gameController.level.scoreD.getScaled(scale);
+		Rectangle boundsM = gameController.level.scoreM.getScaled(scale);
+		Rectangle boundsDM = gameController.level.scoreDM.getScaled(scale);
+		
+		batch.draw(gameController.level.scoreU.selected,
+				boundsU.x,
+				boundsU.y,
+				boundsU.width,
+				boundsU.height
+				);
+		
+		batch.draw(gameController.level.scoreD.selected,
+				boundsD.x,
+				boundsD.y,
+				boundsD.width,
+				boundsD.height
+				);
+		
+		batch.draw(gameController.level.scoreM.selected,
+				boundsM.x,
+				boundsM.y,
+				boundsM.width,
+				boundsM.height
+				);
+		batch.draw(gameController.level.scoreDM.selected,
+				boundsDM.x,
+				boundsDM.y,
+				boundsDM.width,
+				boundsDM.height
+				);
+		
+		batch.setColor(1, 1, 1, 1);
+	}
 
 	public void resize (int width, int height) {
 
@@ -219,12 +259,16 @@ public class GameRenderer extends InputAdapter implements Disposable {
 	@Override
 	public boolean touchDown (int screenX, int screenY, int pointer, int button) {
 		touchBounds = new Vector2(screenX, screenY);
+		if(increasable) {
+			increasable = gameController.increaseScore();
+		}
 		return true;
 	}
 
 	@Override
 	public boolean touchUp (int screenX, int screenY, int pointer, int button) {
 		touchBounds = null;
+		increasable = true;
 		return true;
 	}
 

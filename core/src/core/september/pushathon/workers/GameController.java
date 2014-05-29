@@ -55,6 +55,11 @@ public class GameController extends InputAdapter {
 	public void update (float deltaTime) {
 		level.update(deltaTime);
 	}
+
+	public boolean increaseScore() {
+		level.score+=1;
+		return false;
+	}
 	
 	
 

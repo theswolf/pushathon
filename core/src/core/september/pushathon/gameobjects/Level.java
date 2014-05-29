@@ -56,6 +56,12 @@ public class Level {
 	public MetalBox box;
 	public Counter counterD;
 	public Counter counterU;
+	
+	public Scorer scoreU;
+	public Scorer scoreD;
+	public Scorer scoreM;
+	public Scorer scoreDM;
+	public int score = 0;
 
 	public Level (String filename) {
 		init(filename);
@@ -84,6 +90,34 @@ public class Level {
 				square.height,
 				10);
 		
+		scoreU = new Scorer(
+				10,
+				10, 
+				Assets.instance.countdown.off.getRegionWidth()*0.4f, 
+				Assets.instance.countdown.off.getRegionHeight()*0.4f,
+				1);
+		Rectangle squareCounter = scoreU.getScaled(1f);
+		scoreD = new Scorer(
+				squareCounter.x + squareCounter.width,
+				squareCounter.y,
+				squareCounter.width, 
+				squareCounter.height,
+				10);
+		squareCounter = scoreD.getScaled(1f);
+		scoreM = new Scorer(
+				squareCounter.x + squareCounter.width,
+				squareCounter.y,
+				squareCounter.width, 
+				squareCounter.height,
+				100);
+		squareCounter = scoreM.getScaled(1f);
+		scoreDM = new Scorer(
+				squareCounter.x + squareCounter.width,
+				squareCounter.y,
+				squareCounter.width, 
+				squareCounter.height,
+				1000);
+		
 		Gdx.app.debug(TAG, "level '" + filename + "' loaded");
 	}
 
@@ -97,6 +131,11 @@ public class Level {
 	public void update(float deltaTime) {
 		counterD.update(deltaTime);
 		counterU.update(deltaTime);
+		scoreU.score = scoreD.score = scoreM.score = scoreDM.score = score;		
+		scoreU.update(deltaTime);
+		scoreD.update(deltaTime);
+		scoreM.update(deltaTime);
+		scoreDM.update(deltaTime);
 	}
 
 }
