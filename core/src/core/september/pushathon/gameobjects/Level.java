@@ -95,28 +95,28 @@ public class Level {
 				10, 
 				Assets.instance.countdown.off.getRegionWidth()*0.4f, 
 				Assets.instance.countdown.off.getRegionHeight()*0.4f,
-				1);
+				1000);
 		Rectangle squareCounter = scoreU.getScaled(1f);
 		scoreD = new Scorer(
 				squareCounter.x + squareCounter.width,
 				squareCounter.y,
 				squareCounter.width, 
 				squareCounter.height,
-				10);
+				100);
 		squareCounter = scoreD.getScaled(1f);
 		scoreM = new Scorer(
 				squareCounter.x + squareCounter.width,
 				squareCounter.y,
 				squareCounter.width, 
 				squareCounter.height,
-				100);
+				10);
 		squareCounter = scoreM.getScaled(1f);
 		scoreDM = new Scorer(
 				squareCounter.x + squareCounter.width,
 				squareCounter.y,
 				squareCounter.width, 
 				squareCounter.height,
-				1000);
+				1);
 		
 		Gdx.app.debug(TAG, "level '" + filename + "' loaded");
 	}
