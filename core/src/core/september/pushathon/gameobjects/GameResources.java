@@ -24,9 +24,9 @@ import core.september.foundation.Assets;
 import core.september.foundation.util.Constants;
 
 
-public class Level {
+public class GameResources {
 
-	public static final String TAG = Level.class.getName();
+	public static final String TAG = GameResources.class.getName();
 	
 
 	public enum BLOCK_TYPE {
@@ -63,7 +63,7 @@ public class Level {
 	public Scorer scoreDM;
 	public int score = 0;
 
-	public Level (String filename) {
+	public GameResources (String filename) {
 		init(filename);
 	}
 
@@ -83,18 +83,19 @@ public class Level {
 				,Assets.instance.countdown.off.getRegionHeight()
 				,1);
 		Rectangle square = counterU.getScaled(1f);
+		
 		counterD = new Counter(
-				square.x - Assets.instance.countdown.off.getRegionWidth(),
+				square.x - square.width,
 				square.y, 
 				square.width, 
 				square.height,
 				10);
-		
+		Rectangle buttonSquare = button.getScaled(1f);
 		scoreU = new Scorer(
-				10,
-				10, 
-				Assets.instance.countdown.off.getRegionWidth()*0.4f, 
-				Assets.instance.countdown.off.getRegionHeight()*0.4f,
+				10 + buttonSquare.x + buttonSquare.width,
+				square.y - square.height, 
+				Assets.instance.countdown.off.getRegionWidth()*0.8f, 
+				Assets.instance.countdown.off.getRegionHeight()*0.8f,
 				1000);
 		Rectangle squareCounter = scoreU.getScaled(1f);
 		scoreD = new Scorer(

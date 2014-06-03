@@ -22,6 +22,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -95,20 +96,30 @@ public class GameRenderer extends InputAdapter implements Disposable {
 		batch.begin();
 		//gameController.level.render(batch);
 		//renderBack(batch);
+		
 		renderButton(batch);
 		renderCounter(batch);
 		renderScorer(batch);
-		
+		renderText(batch);
 		
 		batch.end();
+	}
+	
+	private void renderText (SpriteBatch batch) {
+		BitmapFont font = Assets.instance.fonts.defaultNormal;
+		font.setColor(Color.ORANGE);
+		font.draw(batch, "This is a test!!!!", 1, 2);
 	}
 	
 	private void renderMask (ShapeRenderer shape) {
 		shape.setProjectionMatrix(camera.combined);
 		shape.begin(ShapeType.Line);
 		shape.setColor(Color.DARK_GRAY);
-		Rectangle boundsD = gameController.level.counterD.getScaled(scale);
+		Rectangle boundsD = gameController.resources.counterD.getScaled(scale);
 		shape.rect(boundsD.x,boundsD.y,boundsD.width*2,boundsD.height);
+		boundsD = gameController.resources.scoreU.getScaled(scale);
+		shape.rect(boundsD.x,boundsD.y,boundsD.width*4,boundsD.height);
+		
 		Gdx.gl.glLineWidth(5);
 		shape.end();
 	}
@@ -116,7 +127,7 @@ public class GameRenderer extends InputAdapter implements Disposable {
 	
 	
 	private boolean isTouched() {
-		if(touchBounds != null) {
+		if(touchBounds != null && gameController.timeLeft > Constants.TIME_GONE ) {
 			//touchpoint = new Rectangle(touchBounds.x, touchBounds.y, 1, 1);
 			Vector3 unproject = camera.unproject(new Vector3(touchBounds.x, touchBounds.y, 0));
 			touchpoint = new Rectangle(unproject.x,unproject.y,1,1);
@@ -127,13 +138,13 @@ public class GameRenderer extends InputAdapter implements Disposable {
 
 	private void renderButton(SpriteBatch batch) {
 		TextureRegion  reg = null;
-		reg = isTouched() ? gameController.level.button.down :  gameController.level.button.up;
+		reg = isTouched() ? gameController.resources.button.down :  gameController.resources.button.up;
 //		batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
 //			rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(),
 //			viewDirection == VIEW_DIRECTION.LEFT, false);
 
 		// Reset color to white
-		bounds = gameController.level.button.getScaled(scale);
+		bounds = gameController.resources.button.getScaled(scale);
 		
 		batch.draw(reg, 
 				bounds.x,
@@ -147,9 +158,9 @@ public class GameRenderer extends InputAdapter implements Disposable {
 	
 	private void renderBack(SpriteBatch batch) {
 
-		Rectangle bounds = gameController.level.box.getScaled(scale);
+		Rectangle bounds = gameController.resources.box.getScaled(scale);
 		
-		batch.draw(gameController.level.box.back, 
+		batch.draw(gameController.resources.box.back, 
 				bounds.x,
 				bounds.y,
 				bounds.width,
@@ -161,17 +172,17 @@ public class GameRenderer extends InputAdapter implements Disposable {
 	
 	private void renderCounter(SpriteBatch batch) {
 
-		Rectangle boundsU = gameController.level.counterU.getScaled(scale);
-		Rectangle boundsD = gameController.level.counterD.getScaled(scale);
+		Rectangle boundsU = gameController.resources.counterU.getScaled(scale);
+		Rectangle boundsD = gameController.resources.counterD.getScaled(scale);
 		
-		batch.draw(gameController.level.counterU.selected,
+		batch.draw(gameController.resources.counterU.selected,
 				boundsU.x,
 				boundsU.y,
 				boundsU.width,
 				boundsU.height
 				);
 		
-		batch.draw(gameController.level.counterD.selected,
+		batch.draw(gameController.resources.counterD.selected,
 				boundsD.x,
 				boundsD.y,
 				boundsD.width,
@@ -183,32 +194,32 @@ public class GameRenderer extends InputAdapter implements Disposable {
 	
 	private void renderScorer(SpriteBatch batch) {
 
-		Rectangle boundsU = gameController.level.scoreU.getScaled(scale);
-		Rectangle boundsD = gameController.level.scoreD.getScaled(scale);
-		Rectangle boundsM = gameController.level.scoreM.getScaled(scale);
-		Rectangle boundsDM = gameController.level.scoreDM.getScaled(scale);
+		Rectangle boundsU = gameController.resources.scoreU.getScaled(scale);
+		Rectangle boundsD = gameController.resources.scoreD.getScaled(scale);
+		Rectangle boundsM = gameController.resources.scoreM.getScaled(scale);
+		Rectangle boundsDM = gameController.resources.scoreDM.getScaled(scale);
 		
-		batch.draw(gameController.level.scoreU.selected,
+		batch.draw(gameController.resources.scoreU.selected,
 				boundsU.x,
 				boundsU.y,
 				boundsU.width,
 				boundsU.height
 				);
 		
-		batch.draw(gameController.level.scoreD.selected,
+		batch.draw(gameController.resources.scoreD.selected,
 				boundsD.x,
 				boundsD.y,
 				boundsD.width,
 				boundsD.height
 				);
 		
-		batch.draw(gameController.level.scoreM.selected,
+		batch.draw(gameController.resources.scoreM.selected,
 				boundsM.x,
 				boundsM.y,
 				boundsM.width,
 				boundsM.height
 				);
-		batch.draw(gameController.level.scoreDM.selected,
+		batch.draw(gameController.resources.scoreDM.selected,
 				boundsDM.x,
 				boundsDM.y,
 				boundsDM.width,

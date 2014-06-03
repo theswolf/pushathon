@@ -23,7 +23,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Rectangle;
 
 import core.september.foundation.util.Constants;
-import core.september.pushathon.gameobjects.Level;
+import core.september.pushathon.gameobjects.GameResources;
 
 
 public class GameController extends InputAdapter {
@@ -31,8 +31,8 @@ public class GameController extends InputAdapter {
 	private static final String TAG = GameController.class.getName();
 
 	private Game game;
-	public Level level;
-
+	public GameResources resources;
+	public float timeLeft = Constants.TIME_LEFT;
 	// Rectangles for collision detection
 	private Rectangle r2 = new Rectangle();
 
@@ -49,15 +49,16 @@ public class GameController extends InputAdapter {
 	}
 
 	private void initLevel () {
-		level = new Level("no file");
+		resources = new GameResources("no file");
 	}
 
 	public void update (float deltaTime) {
-		level.update(deltaTime);
+		timeLeft-=deltaTime;
+		resources.update(deltaTime);
 	}
 
 	public boolean increaseScore() {
-		level.score+=1;
+		resources.score+=1;
 		return false;
 	}
 	

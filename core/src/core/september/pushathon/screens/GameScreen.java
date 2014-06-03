@@ -26,7 +26,7 @@ public class GameScreen extends AbstractGameScreen {
 	@Override
 	public void render (float deltaTime) {
 		// Do not update game world when paused.
-		if (!paused) {
+		if (!paused && gameController.timeLeft > Constants.TIME_GONE) {
 			// Update game world by the time that has passed
 			// since last rendered frame.
 			gameController.update(deltaTime);
