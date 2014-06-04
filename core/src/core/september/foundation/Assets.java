@@ -48,6 +48,8 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetButton button;
 	public AssetBackground  background;
 	public AssetCountDown countdown;
+	public AssetPowerButton powerButton;
+	public AssetLed led;
 	public AssetFonts fonts;
 	private static final String font = "fonts/impact.fnt";
 
@@ -66,6 +68,22 @@ public class Assets implements Disposable, AssetErrorListener {
 	}
 
 
+	public class AssetPowerButton{
+		public final AtlasRegion on;
+		public final AtlasRegion off;
+		public AssetPowerButton (TextureAtlas atlas) {
+			on = atlas.findRegion("powerOnAlpha");
+			off = atlas.findRegion("powerOffAlpha");
+		}
+	}
+	public class AssetLed{
+		public final AtlasRegion on;
+		public final AtlasRegion off;
+		public AssetLed (TextureAtlas atlas) {
+			on = atlas.findRegion("ledOn");
+			off = atlas.findRegion("ledOff");
+		}
+	}
 	
 	public class AssetButton {
 		public final AtlasRegion up;
@@ -138,6 +156,8 @@ public class Assets implements Disposable, AssetErrorListener {
 		button = new AssetButton(atlas);
 		background = new AssetBackground(atlas);
 		countdown = new AssetCountDown(atlas);
+		powerButton = new AssetPowerButton(atlas);
+		led = new AssetLed(atlas);
 		fonts = new AssetFonts();
 	}
 

@@ -48,6 +48,7 @@ public class GameRenderer extends InputAdapter implements Disposable {
 	public Vector2 touchBounds;
 	float scale = 1f;
 	boolean increasable = true;
+	
 
 
 	public GameRenderer (GameController gameController) {
@@ -96,11 +97,13 @@ public class GameRenderer extends InputAdapter implements Disposable {
 		batch.begin();
 		//gameController.level.render(batch);
 		//renderBack(batch);
-		
+		bounds = gameController.resources.started? gameController.resources.button.getScaled(scale) :
+			gameController.resources.powerButton.getScaled(scale);
+		renderPowerUnit(batch);
 		renderButton(batch);
 		renderCounter(batch);
 		renderScorer(batch);
-		renderText(batch);
+		//renderText(batch);
 		
 		batch.end();
 	}
@@ -136,21 +139,38 @@ public class GameRenderer extends InputAdapter implements Disposable {
 		return false;
 	}
 
+	private void renderPowerUnit(SpriteBatch batch) {
+		TextureRegion  reg = null;
+		reg = isTouched() || gameController.resources.started ? gameController.resources.powerButton.on :  gameController.resources.powerButton.off;
+		Rectangle myBounds = gameController.resources.powerButton.getScaled(scale);
+		batch.draw(reg, 
+				myBounds.x,
+				myBounds.y,
+				myBounds.width,
+				myBounds.height
+				);
+		TextureRegion ledReg =  gameController.resources.started ? gameController.resources.powerLed.on : gameController.resources.powerLed.off;
+		myBounds = gameController.resources.powerLed.getScaled(scale);
+		
+		batch.draw(ledReg, 
+				myBounds.x,
+				myBounds.y,
+				myBounds.width,
+				myBounds.height
+				);
+		
+		batch.setColor(1, 1, 1, 1);
+	}
+	
 	private void renderButton(SpriteBatch batch) {
 		TextureRegion  reg = null;
-		reg = isTouched() ? gameController.resources.button.down :  gameController.resources.button.up;
-//		batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
-//			rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(),
-//			viewDirection == VIEW_DIRECTION.LEFT, false);
-
-		// Reset color to white
-		bounds = gameController.resources.button.getScaled(scale);
-		
+		reg = isTouched() &&  gameController.resources.started ? gameController.resources.button.down :  gameController.resources.button.up;
+		Rectangle myBounds = gameController.resources.button.getScaled(scale);
 		batch.draw(reg, 
-				bounds.x,
-				bounds.y,
-				bounds.width,
-				bounds.height
+				myBounds.x,
+				myBounds.y,
+				myBounds.width,
+				myBounds.height
 				);
 		
 		batch.setColor(1, 1, 1, 1);
@@ -270,7 +290,10 @@ public class GameRenderer extends InputAdapter implements Disposable {
 	@Override
 	public boolean touchDown (int screenX, int screenY, int pointer, int button) {
 		touchBounds = new Vector2(screenX, screenY);
-		if(increasable && isTouched()) {
+		if(!gameController.resources.started && isTouched()) {
+			gameController.resources.started = true;
+		}
+		else if(increasable && isTouched()) {
 			increasable = gameController.increaseScore();
 		}
 		return true;

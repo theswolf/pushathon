@@ -1,84 +1,95 @@
 
 pack.png
-size: 958,958
+size: 1022,476
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 0
   rotate: false
-  xy: 804, 843
+  xy: 720, 361
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 1
   rotate: false
-  xy: 242, 361
+  xy: 798, 361
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 804, 726
+  xy: 876, 361
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 3
   rotate: false
-  xy: 882, 843
+  xy: 481, 224
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 4
   rotate: false
-  xy: 242, 244
+  xy: 481, 107
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 5
   rotate: false
-  xy: 320, 361
+  xy: 559, 259
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 6
   rotate: false
-  xy: 804, 609
+  xy: 637, 259
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 7
   rotate: false
-  xy: 882, 726
+  xy: 559, 142
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 8
   rotate: false
-  xy: 242, 127
+  xy: 637, 142
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 9
   rotate: false
-  xy: 320, 244
+  xy: 715, 244
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
-background
+buttonTextDown
   rotate: false
-  xy: 2, 478
-  size: 800, 480
-  orig: 800, 480
+  xy: 954, 408
+  size: 68, 68
+  split: 16, 16, 17, 17
+  pad: 3, 3, 4, 3
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+buttonTextUp
+  rotate: false
+  xy: 954, 338
+  size: 68, 68
+  split: 16, 16, 17, 17
+  pad: 3, 3, 4, 3
+  orig: 68, 68
   offset: 0, 0
   index: -1
 buttondown
@@ -95,10 +106,66 @@ buttonup
   orig: 238, 236
   offset: 0, 0
   index: -1
+ledOff
+  rotate: false
+  xy: 379, 239
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+ledOn
+  rotate: false
+  xy: 516, 376
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+next
+  rotate: false
+  xy: 379, 137
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
 off
   rotate: false
-  xy: 398, 361
+  xy: 793, 244
   size: 76, 115
   orig: 76, 115
+  offset: 0, 0
+  index: -1
+powerOff
+  rotate: false
+  xy: 242, 341
+  size: 135, 135
+  orig: 135, 135
+  offset: 0, 0
+  index: -1
+powerOffAlpha
+  rotate: false
+  xy: 242, 204
+  size: 135, 135
+  orig: 135, 135
+  offset: 0, 0
+  index: -1
+powerOn
+  rotate: false
+  xy: 379, 341
+  size: 135, 135
+  orig: 135, 135
+  offset: 0, 0
+  index: -1
+powerOnAlpha
+  rotate: false
+  xy: 242, 67
+  size: 135, 135
+  orig: 135, 135
+  offset: 0, 0
+  index: -1
+prev
+  rotate: false
+  xy: 618, 376
+  size: 100, 100
+  orig: 100, 100
   offset: 0, 0
   index: -1

@@ -61,7 +61,12 @@ public class GameResources {
 	public Scorer scoreD;
 	public Scorer scoreM;
 	public Scorer scoreDM;
+	
+	public PowerButton powerButton;
+	public Led powerLed;
+	
 	public int score = 0;
+	public boolean started = false;
 
 	public GameResources (String filename) {
 		init(filename);
@@ -69,7 +74,7 @@ public class GameResources {
 
 	private void init (String filename) {
 		// player character
-		box = new MetalBox(0,0,Assets.instance.background.background.getRegionWidth(),Assets.instance.background.background.getRegionHeight());
+		//box = new MetalBox(0,0,Assets.instance.background.background.getRegionWidth(),Assets.instance.background.background.getRegionHeight());
 		button = new PushButton(
 				(Constants.VIEWPORT_WIDTH - Assets.instance.button.up.getRegionWidth())/2,
 				(Constants.VIEWPORT_HEIGHT - Assets.instance.button.up.getRegionHeight())/2,
@@ -119,6 +124,9 @@ public class GameResources {
 				squareCounter.height,
 				1);
 		
+		powerButton = new PowerButton(buttonSquare.x - Assets.instance.powerButton.off.getRegionWidth()*1.8f, buttonSquare.y, Assets.instance.powerButton.off.getRegionWidth(), Assets.instance.powerButton.on.getRegionHeight());
+		square = powerButton.getScaled(1f);
+		powerLed = new Led(square.x - Assets.instance.led.off.getRegionWidth()*0.5f*0.5f +square.getWidth()/2 ,square.y + square.height*1.2f,Assets.instance.led.off.getRegionWidth()*0.5f, Assets.instance.led.off.getRegionHeight()*0.5f);
 		Gdx.app.debug(TAG, "level '" + filename + "' loaded");
 	}
 
@@ -130,13 +138,16 @@ public class GameResources {
 //	}
 	
 	public void update(float deltaTime) {
-		counterD.update(deltaTime);
-		counterU.update(deltaTime);
-		scoreU.score = scoreD.score = scoreM.score = scoreDM.score = score;		
-		scoreU.update(deltaTime);
-		scoreD.update(deltaTime);
-		scoreM.update(deltaTime);
-		scoreDM.update(deltaTime);
+		if(started) {
+			counterD.update(deltaTime);
+			counterU.update(deltaTime);
+			scoreU.score = scoreD.score = scoreM.score = scoreDM.score = score;		
+			scoreU.update(deltaTime);
+			scoreD.update(deltaTime);
+			scoreM.update(deltaTime);
+			scoreDM.update(deltaTime);
+		}
+		
 	}
 
 }
