@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import core.september.foundation.AbstractGameObject;
 import core.september.foundation.Assets;
 import core.september.foundation.util.Constants;
+import core.september.pushathon.workers.GameController;
 
 public class Counter extends AbstractGameObject{
 	
@@ -23,7 +24,6 @@ public class Counter extends AbstractGameObject{
 	public TextureRegion selected;
 	protected int posDivider;
 
-	protected float elapsedTime = Constants.TIME_LEFT;
 //	@Override
 //	public void render(SpriteBatch batch) {
 //		TextureRegion reg = null;
@@ -98,7 +98,6 @@ public class Counter extends AbstractGameObject{
 	}
 	
 	public void update (float deltaTime) {
-		elapsedTime-= deltaTime;
-		chooseSelected((int)elapsedTime / posDivider % 10);
+		chooseSelected((int)GameController.timeLeft / posDivider % 10);
 	}
 }

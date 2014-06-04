@@ -1,47 +1,47 @@
 
 pack.png
-size: 1022,476
+size: 976,476
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 0
   rotate: false
-  xy: 720, 361
+  xy: 822, 361
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 1
   rotate: false
-  xy: 798, 361
+  xy: 900, 361
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 876, 361
+  xy: 481, 224
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 3
   rotate: false
-  xy: 481, 224
+  xy: 481, 107
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 4
   rotate: false
-  xy: 481, 107
+  xy: 559, 259
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 5
   rotate: false
-  xy: 559, 259
+  xy: 559, 142
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
@@ -55,28 +55,28 @@ repeat: none
   index: -1
 7
   rotate: false
-  xy: 559, 142
+  xy: 637, 142
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 8
   rotate: false
-  xy: 637, 142
+  xy: 715, 259
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 9
   rotate: false
-  xy: 715, 244
+  xy: 715, 142
   size: 76, 115
   orig: 76, 115
   offset: 0, 0
   index: -1
 buttonTextDown
   rotate: false
-  xy: 954, 408
+  xy: 379, 67
   size: 68, 68
   split: 16, 16, 17, 17
   pad: 3, 3, 4, 3
@@ -85,7 +85,7 @@ buttonTextDown
   index: -1
 buttonTextUp
   rotate: false
-  xy: 954, 338
+  xy: 793, 174
   size: 68, 68
   split: 16, 16, 17, 17
   pad: 3, 3, 4, 3
@@ -134,6 +134,13 @@ off
   orig: 76, 115
   offset: 0, 0
   index: -1
+play
+  rotate: false
+  xy: 618, 376
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
 powerOff
   rotate: false
   xy: 242, 341
@@ -164,7 +171,7 @@ powerOnAlpha
   index: -1
 prev
   rotate: false
-  xy: 618, 376
+  xy: 720, 376
   size: 100, 100
   orig: 100, 100
   offset: 0, 0

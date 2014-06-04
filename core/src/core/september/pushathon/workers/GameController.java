@@ -32,7 +32,7 @@ public class GameController extends InputAdapter {
 
 	private Game game;
 	public GameResources resources;
-	public float timeLeft = Constants.TIME_LEFT;
+	public static float timeLeft = Constants.TIME_LEFT;
 	// Rectangles for collision detection
 	private Rectangle r2 = new Rectangle();
 
