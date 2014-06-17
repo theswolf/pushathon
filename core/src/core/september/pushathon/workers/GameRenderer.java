@@ -36,274 +36,39 @@ import core.september.foundation.Assets;
 import core.september.foundation.util.Constants;
 
 
-public class GameRenderer extends InputAdapter implements Disposable {
+public class GameRenderer extends BatchRenderer implements Disposable {
 
 	private static final String TAG = GameRenderer.class.getName();
 
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
-	private ShapeRenderer shape;
-	private GameController gameController;
-	private Rectangle bounds,touchpoint,viewport;
-	public Vector2 touchBounds;
-	float scale = 1f;
-	boolean increasable = true;
 	
 
+	
+	
 
-	public GameRenderer (GameController gameController) {
-		Gdx.input.setInputProcessor(this);
-		this.gameController = gameController;
-		init();
-	}
-
-	private void init () {
-		batch = new SpriteBatch();
-		shape = new ShapeRenderer();
-		camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
-		//camera.setToOrtho(true);
 		
-	}
-
-//	public void render () {
-//		renderGame(batch);
-//	}
-	
-    public void render()
-    {
-        
-    	//Gdx.gl.glClearColor(0x64 / 255.0f, 0x95 / 255.0f, 0xed / 255.0f, 0xff / 255.0f);
-    	Gdx.gl.glClearColor(Color.LIGHT_GRAY.r,Color.LIGHT_GRAY.g,Color.LIGHT_GRAY.b,Color.LIGHT_GRAY.a);
-    	 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		// Clears the screen
-    	// update camera
-		
-		camera.position.set(Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/2, 0);
-        camera.update();
-
-        // set viewport
-        Gdx.gl.glViewport((int) viewport.x, (int) viewport.y,
-                          (int) viewport.width, (int) viewport.height);
-
-        // clear previous frame
-       
-        renderGame(batch);
-        renderMask(shape);
-        // DRAW EVERYTHING
-    }
-
-	private void renderGame (SpriteBatch batch) {
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		//gameController.level.render(batch);
-		//renderBack(batch);
-		bounds = gameController.resources.started? gameController.resources.button.getScaled(scale) :
-			gameController.resources.powerButton.getScaled(scale);
-		renderPowerUnit(batch);
-		renderButton(batch);
-		renderCounter(batch);
-		renderScorer(batch);
-		//renderText(batch);
-		
-		batch.end();
-	}
-	
-	private void renderText (SpriteBatch batch) {
-		BitmapFont font = Assets.instance.fonts.defaultNormal;
-		font.setColor(Color.ORANGE);
-		font.draw(batch, "This is a test!!!!", 1, 2);
-	}
-	
-	private void renderMask (ShapeRenderer shape) {
-		shape.setProjectionMatrix(camera.combined);
-		shape.begin(ShapeType.Line);
-		shape.setColor(Color.DARK_GRAY);
-		Rectangle boundsD = gameController.resources.counterD.getScaled(scale);
-		shape.rect(boundsD.x,boundsD.y,boundsD.width*2,boundsD.height);
-		boundsD = gameController.resources.scoreU.getScaled(scale);
-		shape.rect(boundsD.x,boundsD.y,boundsD.width*4,boundsD.height);
-		
-		Gdx.gl.glLineWidth(5);
-		shape.end();
-	}
-	
-	
-	
-	private boolean isTouched() {
-		if(touchBounds != null && gameController.timeLeft > Constants.TIME_GONE ) {
-			//touchpoint = new Rectangle(touchBounds.x, touchBounds.y, 1, 1);
-			Vector3 unproject = camera.unproject(new Vector3(touchBounds.x, touchBounds.y, 0));
-			touchpoint = new Rectangle(unproject.x,unproject.y,1,1);
-			return bounds.overlaps(touchpoint);
+		public GameRenderer(GameController gameController) {
+			super(gameController);
 		}
-		return false;
-	}
 
-	private void renderPowerUnit(SpriteBatch batch) {
-		TextureRegion  reg = null;
-		reg = isTouched() || gameController.resources.started ? gameController.resources.powerButton.on :  gameController.resources.powerButton.off;
-		Rectangle myBounds = gameController.resources.powerButton.getScaled(scale);
-		batch.draw(reg, 
-				myBounds.x,
-				myBounds.y,
-				myBounds.width,
-				myBounds.height
-				);
-		TextureRegion ledReg =  gameController.resources.started ? gameController.resources.powerLed.on : gameController.resources.powerLed.off;
-		myBounds = gameController.resources.powerLed.getScaled(scale);
-		
-		batch.draw(ledReg, 
-				myBounds.x,
-				myBounds.y,
-				myBounds.width,
-				myBounds.height
-				);
-		
-		batch.setColor(1, 1, 1, 1);
-	}
-	
-	private void renderButton(SpriteBatch batch) {
-		TextureRegion  reg = null;
-		reg = isTouched() &&  gameController.resources.started ? gameController.resources.button.down :  gameController.resources.button.up;
-		Rectangle myBounds = gameController.resources.button.getScaled(scale);
-		batch.draw(reg, 
-				myBounds.x,
-				myBounds.y,
-				myBounds.width,
-				myBounds.height
-				);
-		
-		batch.setColor(1, 1, 1, 1);
-	}
-	
-	private void renderBack(SpriteBatch batch) {
-
-		Rectangle bounds = gameController.resources.box.getScaled(scale);
-		
-		batch.draw(gameController.resources.box.back, 
-				bounds.x,
-				bounds.y,
-				bounds.width,
-				bounds.height
-				);
-		
-		batch.setColor(1, 1, 1, 1);
-	}
-	
-	private void renderCounter(SpriteBatch batch) {
-
-		Rectangle boundsU = gameController.resources.counterU.getScaled(scale);
-		Rectangle boundsD = gameController.resources.counterD.getScaled(scale);
-		
-		batch.draw(gameController.resources.counterU.selected,
-				boundsU.x,
-				boundsU.y,
-				boundsU.width,
-				boundsU.height
-				);
-		
-		batch.draw(gameController.resources.counterD.selected,
-				boundsD.x,
-				boundsD.y,
-				boundsD.width,
-				boundsD.height
-				);
-		
-		batch.setColor(1, 1, 1, 1);
-	}
-	
-	private void renderScorer(SpriteBatch batch) {
-
-		Rectangle boundsU = gameController.resources.scoreU.getScaled(scale);
-		Rectangle boundsD = gameController.resources.scoreD.getScaled(scale);
-		Rectangle boundsM = gameController.resources.scoreM.getScaled(scale);
-		Rectangle boundsDM = gameController.resources.scoreDM.getScaled(scale);
-		
-		batch.draw(gameController.resources.scoreU.selected,
-				boundsU.x,
-				boundsU.y,
-				boundsU.width,
-				boundsU.height
-				);
-		
-		batch.draw(gameController.resources.scoreD.selected,
-				boundsD.x,
-				boundsD.y,
-				boundsD.width,
-				boundsD.height
-				);
-		
-		batch.draw(gameController.resources.scoreM.selected,
-				boundsM.x,
-				boundsM.y,
-				boundsM.width,
-				boundsM.height
-				);
-		batch.draw(gameController.resources.scoreDM.selected,
-				boundsDM.x,
-				boundsDM.y,
-				boundsDM.width,
-				boundsDM.height
-				);
-		
-		batch.setColor(1, 1, 1, 1);
-	}
-
-	public void resize (int width, int height) {
-
-//		camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / (float)height) * (float)width;
-//		camera.
-//		camera.update();
-		
-		float ASPECT_RATIO = Constants.VIEWPORT_WIDTH/Constants.VIEWPORT_HEIGHT;
-		float aspectRatio = (float)width/(float)height;
-        
-        Vector2 crop = new Vector2(0f, 0f);
-        if(aspectRatio > ASPECT_RATIO)
-        {
-            scale = (float)height/(float)Constants.VIEWPORT_HEIGHT ;
-            crop.x = (width - Constants.VIEWPORT_WIDTH *scale)/2f;
-        }
-        else if(aspectRatio < ASPECT_RATIO)
-        {
-            scale = (float)width/(float)Constants.VIEWPORT_WIDTH;
-            crop.y = (height - Constants.VIEWPORT_HEIGHT*scale)/2f;
-        }
-        else
-        {
-            scale = (float)width/(float)Constants.VIEWPORT_WIDTH;
-        }
-
-        float w = (float)Constants.VIEWPORT_WIDTH*scale;
-        float h = (float)Constants.VIEWPORT_HEIGHT*scale;
-        viewport = new Rectangle(crop.x, crop.y, w, h);
-        camera.viewportHeight = h;
-        camera.viewportWidth = w;
-	}
-
-	@Override
-	public void dispose () {
-		batch.dispose();
-		shape.dispose();
-	}
-	
-	@Override
-	public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-		touchBounds = new Vector2(screenX, screenY);
-		if(!gameController.resources.started && isTouched()) {
-			gameController.resources.started = true;
+		@Override
+		public boolean touchDown (int screenX, int screenY, int pointer, int button) {
+			touchBounds = new Vector2(screenX, screenY);
+			if(!gameController.resources.started && isTouched()) {
+				gameController.resources.started = true;
+			}
+			else if(increasable && isTouched()) {
+				increasable = gameController.increaseScore();
+			}
+			return true;
 		}
-		else if(increasable && isTouched()) {
-			increasable = gameController.increaseScore();
+
+		@Override
+		public boolean touchUp (int screenX, int screenY, int pointer, int button) {
+			touchBounds = null;
+			increasable = true;
+			return true;
 		}
-		return true;
 	}
 
-	@Override
-	public boolean touchUp (int screenX, int screenY, int pointer, int button) {
-		touchBounds = null;
-		increasable = true;
-		return true;
-	}
+	
 
-}

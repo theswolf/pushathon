@@ -9,12 +9,13 @@ import core.september.foundation.util.Constants;
 import core.september.foundation.util.GamePreferences;
 import core.september.pushathon.workers.GameController;
 import core.september.pushathon.workers.GameRenderer;
+import core.september.pushathon.workers.HelpRenderer;
 
 
 public class HelpScreen extends AbstractGameScreen {
 
 	private GameController gameController;
-	private GameRenderer gameRenderer;
+	private HelpRenderer helpRenderer;
 
 	private boolean paused;
 
@@ -22,6 +23,8 @@ public class HelpScreen extends AbstractGameScreen {
 	public HelpScreen (Game game) {
 		super(game);
 	}
+	
+	
 
 	@Override
 	public void render (float deltaTime) {
@@ -34,26 +37,28 @@ public class HelpScreen extends AbstractGameScreen {
 		// Sets the clear screen color to: Cornflower Blue
 	
 		// Render game world to screen
-		gameRenderer.render();
+		helpRenderer.render();
 	}
+	
+	
 
 	@Override
 	public void resize (int width, int height) {
 		super.resize(width, height);
-		gameRenderer.resize(width, height);
+		helpRenderer.resize(width, height);
 	}
 
 	@Override
 	public void show () {
 		GamePreferences.instance.load();
 		gameController = new GameController(game);
-		gameRenderer = new GameRenderer(gameController);
+		helpRenderer = new HelpRenderer(gameController);
 		Gdx.input.setCatchBackKey(true);
 	}
 
 	@Override
 	public void hide () {
-		gameRenderer.dispose();
+		helpRenderer.dispose();
 		Gdx.input.setCatchBackKey(false);
 	}
 

@@ -51,10 +51,23 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetPowerButton powerButton;
 	public AssetLed led;
 	public AssetFonts fonts;
+	
+	public AssetUi assetUi;
+	
 	private static final String font = "fonts/impact.fnt";
 
 	// singleton: prevent instantiation from other classes
 	private Assets () {
+	}
+	
+	public class AssetUi {
+		public final AtlasRegion next;
+		public final AtlasRegion prev;
+		//public final AtlasRegion btnUp;
+		public AssetUi (TextureAtlas atlas) { 
+			next = atlas.findRegion("next");
+			prev = atlas.findRegion("prev");
+		}
 	}
 
 	public class AssetFonts {
@@ -158,7 +171,9 @@ public class Assets implements Disposable, AssetErrorListener {
 		countdown = new AssetCountDown(atlas);
 		powerButton = new AssetPowerButton(atlas);
 		led = new AssetLed(atlas);
+		assetUi = new AssetUi(atlas);
 		fonts = new AssetFonts();
+		
 	}
 
 	@Override
