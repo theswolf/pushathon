@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
@@ -34,22 +35,41 @@ import com.badlogic.gdx.utils.Disposable;
 
 import core.september.foundation.Assets;
 import core.september.foundation.util.Constants;
+import core.september.pushathon.shaders.Shader;
 
 
 public class HelpRenderer extends BatchRenderer implements Disposable {
 
 	private static final String TAG = HelpRenderer.class.getName();
+	
+	protected OrthographicCamera upCamera;
+	protected SpriteBatch upBatch;
 	public Rectangle boundsNext;
+	public int step;
+	protected boolean touchLock = true;
 	
 	private InputAdapter iAdapter;
 
 	
-	public HelpRenderer(GameController gameController) {
+	public HelpRenderer(GameController gameController,int step) {
 		super(gameController);
+		this.step = step;
 	}
+	
+	protected void init () {
+		super.init();
+		upBatch = new SpriteBatch();
+		upCamera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
+		upCamera.setToOrtho(true);
+	}
+	
+	 public void render() {
+		 super.render();
+	 }
 
 	protected void renderGame (SpriteBatch batch) {
 		batch.setProjectionMatrix(camera.combined);
+		batch.setShader(Shader.grayscaleShader);
 		batch.begin();
 		//gameController.level.render(batch);
 		//renderBack(batch);
@@ -73,7 +93,7 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		@Override
 		public boolean touchUp (int screenX, int screenY, int pointer, int button) {
 			touchBounds = null;
-			increasable = true;
+			touchLock = true;
 			return true;
 		}
 		
@@ -83,8 +103,9 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		}
 		
 		protected boolean isNextTouched() {
-			if(touchBounds != null ) {
+			if(touchBounds != null && touchLock) {
 				//touchpoint = new Rectangle(touchBounds.x, touchBounds.y, 1, 1);
+				touchLock = false;
 				Vector3 unproject = camera.unproject(new Vector3(touchBounds.x, touchBounds.y, 0));
 				touchpoint = new Rectangle(unproject.x,unproject.y,1,1);
 				return boundsNext.overlaps(touchpoint);
@@ -93,13 +114,22 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		}
 		
 		protected boolean isPrevTouched() {
-			if(touchBounds != null) {
+			if(touchBounds != null && touchLock) {
+				touchLock = false;
 				//touchpoint = new Rectangle(touchBounds.x, touchBounds.y, 1, 1);
 				Vector3 unproject = camera.unproject(new Vector3(touchBounds.x, touchBounds.y, 0));
 				touchpoint = new Rectangle(unproject.x,unproject.y,1,1);
 				return bounds.overlaps(touchpoint);
 			}
 			return false;
+		}
+		
+		public int stepUp() {
+			return step < Constants.MAX_HELP_STEP ? ++step : step;
+		}
+		
+		public int stepDown() {
+			return step > Constants.LOW_HELP_STEP ? --step : step;
 		}
 	}
 

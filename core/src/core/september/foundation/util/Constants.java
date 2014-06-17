@@ -58,5 +58,8 @@ public class Constants {
 	public static final String PREFERENCES = "pushathon.prefs";
 	public static final float TIME_LEFT = 21;
 	public static final float TIME_GONE = 0.9f;
+	
+	public static final int LOW_HELP_STEP = 0;
+	public static final int MAX_HELP_STEP = 4;
 
 }

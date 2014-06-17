@@ -1,12 +1,10 @@
 package core.september.pushathon.gameobjects;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import core.september.foundation.AbstractGameObject;
 import core.september.foundation.Assets;
-import core.september.foundation.util.Constants;
-import core.september.pushathon.workers.GameController;
+import core.september.pushathon.workers.GamePlayController;
 
 public class Counter extends AbstractGameObject{
 	
@@ -98,6 +96,6 @@ public class Counter extends AbstractGameObject{
 	}
 	
 	public void update (float deltaTime) {
-		chooseSelected((int)GameController.timeLeft / posDivider % 10);
+		chooseSelected((int)GamePlayController.timeLeft / posDivider % 10);
 	}
 }

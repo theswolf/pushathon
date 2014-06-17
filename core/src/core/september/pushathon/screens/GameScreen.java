@@ -8,12 +8,13 @@ import core.september.foundation.AbstractGameScreen;
 import core.september.foundation.util.Constants;
 import core.september.foundation.util.GamePreferences;
 import core.september.pushathon.workers.GameController;
+import core.september.pushathon.workers.GamePlayController;
 import core.september.pushathon.workers.GameRenderer;
 
 
 public class GameScreen extends AbstractGameScreen {
 
-	private GameController gameController;
+	private GamePlayController gameController;
 	private GameRenderer gameRenderer;
 
 	private boolean paused;
@@ -46,7 +47,7 @@ public class GameScreen extends AbstractGameScreen {
 	@Override
 	public void show () {
 		GamePreferences.instance.load();
-		gameController = new GameController(game);
+		gameController = new GamePlayController(game);
 		gameRenderer = new GameRenderer(gameController);
 		Gdx.input.setCatchBackKey(true);
 	}

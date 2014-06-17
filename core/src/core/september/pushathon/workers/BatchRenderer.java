@@ -130,15 +130,7 @@ public abstract class BatchRenderer extends InputAdapter implements Disposable {
 	
 	
 	
-    protected boolean isTouched() {
-		if(touchBounds != null && gameController.timeLeft > Constants.TIME_GONE ) {
-			//touchpoint = new Rectangle(touchBounds.x, touchBounds.y, 1, 1);
-			Vector3 unproject = camera.unproject(new Vector3(touchBounds.x, touchBounds.y, 0));
-			touchpoint = new Rectangle(unproject.x,unproject.y,1,1);
-			return bounds.overlaps(touchpoint);
-		}
-		return false;
-	}
+    protected abstract boolean isTouched() ;
 
     protected void renderPowerUnit(SpriteBatch batch) {
 		TextureRegion  reg = null;

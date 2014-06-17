@@ -9,6 +9,7 @@ import core.september.foundation.util.Constants;
 import core.september.foundation.util.GamePreferences;
 import core.september.pushathon.workers.GameController;
 import core.september.pushathon.workers.GameRenderer;
+import core.september.pushathon.workers.HelpController;
 import core.september.pushathon.workers.HelpRenderer;
 
 
@@ -29,7 +30,7 @@ public class HelpScreen extends AbstractGameScreen {
 	@Override
 	public void render (float deltaTime) {
 		// Do not update game world when paused.
-		if (!paused && gameController.timeLeft > Constants.TIME_GONE) {
+		if (!paused) {
 			// Update game world by the time that has passed
 			// since last rendered frame.
 			gameController.update(deltaTime);
@@ -51,8 +52,8 @@ public class HelpScreen extends AbstractGameScreen {
 	@Override
 	public void show () {
 		GamePreferences.instance.load();
-		gameController = new GameController(game);
-		helpRenderer = new HelpRenderer(gameController);
+		gameController = new HelpController(game);
+		helpRenderer = new HelpRenderer(gameController,Constants.LOW_HELP_STEP);
 		Gdx.input.setCatchBackKey(true);
 	}
 

@@ -57,7 +57,7 @@ public class GameRenderer extends BatchRenderer implements Disposable {
 				gameController.resources.started = true;
 			}
 			else if(increasable && isTouched()) {
-				increasable = gameController.increaseScore();
+				increasable = ((GamePlayController) gameController).increaseScore();
 			}
 			return true;
 		}
@@ -67,6 +67,16 @@ public class GameRenderer extends BatchRenderer implements Disposable {
 			touchBounds = null;
 			increasable = true;
 			return true;
+		}
+		
+		protected boolean isTouched() {
+			if(touchBounds != null && ((GamePlayController)gameController).timeLeft > Constants.TIME_GONE ) {
+				//touchpoint = new Rectangle(touchBounds.x, touchBounds.y, 1, 1);
+				Vector3 unproject = camera.unproject(new Vector3(touchBounds.x, touchBounds.y, 0));
+				touchpoint = new Rectangle(unproject.x,unproject.y,1,1);
+				return bounds.overlaps(touchpoint);
+			}
+			return false;
 		}
 	}
 

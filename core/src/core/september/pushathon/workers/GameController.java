@@ -26,15 +26,14 @@ import core.september.foundation.util.Constants;
 import core.september.pushathon.gameobjects.GameResources;
 
 
-public class GameController extends InputAdapter {
+public abstract class GameController {
 
 	private static final String TAG = GameController.class.getName();
 
 	private Game game;
 	public GameResources resources;
-	public static float timeLeft = Constants.TIME_LEFT;
+	
 	// Rectangles for collision detection
-	private Rectangle r2 = new Rectangle();
 
 	private float timeLeftGameOverDelay;
 
@@ -44,23 +43,18 @@ public class GameController extends InputAdapter {
 	}
 
 	private void init () {
-		Gdx.input.setInputProcessor(this);
 		initLevel();
 	}
 
 	private void initLevel () {
 		resources = new GameResources("no file");
 	}
+	
+	public abstract void update(float delta);
 
-	public void update (float deltaTime) {
-		timeLeft-=deltaTime;
-		resources.update(deltaTime);
-	}
+	
 
-	public boolean increaseScore() {
-		resources.score+=1;
-		return false;
-	}
+	
 	
 	
 
