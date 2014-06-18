@@ -22,7 +22,6 @@ import java.lang.ref.WeakReference;
 import com.badlogic.gdx.Game;
 
 import core.september.foundation.AbstractGameScreen;
-import core.september.foundation.DirectedGame;
 import core.september.pushathon.gameobjects.GameResources;
 
 
@@ -30,7 +29,7 @@ public abstract class GameController {
 
 	private static final String TAG = GameController.class.getName();
 
-	protected DirectedGame game;
+	protected Game game;
 	public GameResources resources;
 	public WeakReference<AbstractGameScreen> currentScreen;
 	
@@ -38,7 +37,7 @@ public abstract class GameController {
 
 	private float timeLeftGameOverDelay;
 
-	public GameController (DirectedGame game) {
+	public GameController (Game game) {
 		this.game = game;
 		init();
 	}

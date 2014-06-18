@@ -90,7 +90,7 @@ public abstract class BatchRenderer extends InputAdapter implements Disposable {
         // clear previous frame
        
         renderGame(batch);
-        renderMask(shape);
+        //renderMask(shape);
         // DRAW EVERYTHING
     }
 

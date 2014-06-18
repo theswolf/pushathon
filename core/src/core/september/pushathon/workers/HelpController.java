@@ -1,12 +1,10 @@
 package core.september.pushathon.workers;
 
-import core.september.foundation.DirectedGame;
-import core.september.foundation.transitions.ScreenTransition;
-import core.september.foundation.transitions.ScreenTransitionFade;
+import com.badlogic.gdx.Game;
 
 public class HelpController extends GameController{
 
-	public HelpController(DirectedGame game) {
+	public HelpController(Game game) {
 		super(game);
 	}
 
@@ -16,9 +14,5 @@ public class HelpController extends GameController{
 		
 	}
 	
-	public void prevNextTouched() {
-		ScreenTransition transition = ScreenTransitionFade.init(0.75f);
-		game.setScreen(getCurrentScreen(), transition);
-	}
 
 }

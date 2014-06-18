@@ -1,10 +1,10 @@
 package core.september.pushathon.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
 import core.september.foundation.AbstractGameScreen;
-import core.september.foundation.DirectedGame;
 import core.september.foundation.util.Constants;
 import core.september.foundation.util.GamePreferences;
 import core.september.pushathon.workers.GamePlayController;
@@ -19,7 +19,7 @@ public class GameScreen extends AbstractGameScreen {
 	private boolean paused;
 
 
-	public GameScreen (DirectedGame game) {
+	public GameScreen (Game game) {
 		super(game);
 	}
 

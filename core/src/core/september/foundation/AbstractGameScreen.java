@@ -28,9 +28,9 @@ public abstract class AbstractGameScreen implements Screen {
 
 	public static float scaleX = 1;
 	public static float scaleY = 1;
-	protected DirectedGame game;
+	protected Game game;
 
-	public AbstractGameScreen (DirectedGame game) {
+	public AbstractGameScreen (Game game) {
 		this.game = game;
 	}
 

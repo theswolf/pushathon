@@ -1,14 +1,14 @@
 package core.september.pushathon;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 
 import core.september.foundation.Assets;
-import core.september.foundation.DirectedGame;
 import core.september.pushathon.screens.HelpScreen;
 
-public class PushathonGame extends DirectedGame{
+public class PushathonGame extends Game{
 
 	@Override
 	public void create() {

@@ -49,6 +49,7 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 	protected SpriteBatch upBatch;
 	public Rectangle boundsNext;
 	public int step;
+	protected int lastStep;
 	protected boolean touchLock = true;
 	
 	
@@ -77,10 +78,16 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		 
 		 upCamera.position.set(Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/2, 0);
 		 upCamera.update();
+		 renderViewableObjects(upBatch);
 		 renderUpControls(upBatch);
 		 
 		 
 	 }
+	
+	protected void renderViewableObjects (SpriteBatch batch) { 
+		
+	}
+	 
 	protected void renderUpControls (SpriteBatch batch) { 
 		 batch.setProjectionMatrix(upCamera.combined);
 		 batch.begin();
@@ -126,11 +133,11 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		public boolean touchDown (int screenX, int screenY, int pointer, int button) {
 			touchBounds = new Vector2(screenX, screenY);
 			if(isNextTouched()) {
-				step++;
-				((HelpController)gameController).prevNextTouched();
+				stepUp();
+				
 			}
 			else if(isPrevTouched()) {
-				step--;
+				stepDown();
 			}
 			return true;
 		}
