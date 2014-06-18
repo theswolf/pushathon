@@ -18,6 +18,7 @@
 package core.september.foundation;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 
@@ -27,10 +28,9 @@ public abstract class AbstractGameScreen implements Screen {
 
 	public static float scaleX = 1;
 	public static float scaleY = 1;
-	
-	protected Game game;
+	protected DirectedGame game;
 
-	public AbstractGameScreen (Game game) {
+	public AbstractGameScreen (DirectedGame game) {
 		this.game = game;
 	}
 
@@ -54,5 +54,7 @@ public abstract class AbstractGameScreen implements Screen {
 	public void dispose () {
 		Assets.instance.dispose();
 	}
+	
+	public abstract InputProcessor getInputProcessor ();
 
 }

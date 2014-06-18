@@ -2,13 +2,14 @@ package core.september.pushathon.workers;
 
 import com.badlogic.gdx.Game;
 
+import core.september.foundation.DirectedGame;
 import core.september.foundation.util.Constants;
 
 public class GamePlayController extends GameController{
 
 	public static float timeLeft = Constants.TIME_LEFT;
 	
-	public GamePlayController(Game game) {
+	public GamePlayController(DirectedGame game) {
 		super(game);
 	}
 	

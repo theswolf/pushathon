@@ -63,10 +63,12 @@ public class Assets implements Disposable, AssetErrorListener {
 	public class AssetUi {
 		public final AtlasRegion next;
 		public final AtlasRegion prev;
+		public final AtlasRegion play;
 		//public final AtlasRegion btnUp;
 		public AssetUi (TextureAtlas atlas) { 
 			next = atlas.findRegion("next");
 			prev = atlas.findRegion("prev");
+			play = atlas.findRegion("play");
 		}
 	}
 

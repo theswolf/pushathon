@@ -1,14 +1,14 @@
 package core.september.pushathon;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 
 import core.september.foundation.Assets;
-import core.september.pushathon.screens.GameScreen;
+import core.september.foundation.DirectedGame;
+import core.september.pushathon.screens.HelpScreen;
 
-public class PushathonGame extends Game{
+public class PushathonGame extends DirectedGame{
 
 	@Override
 	public void create() {
@@ -19,7 +19,7 @@ public class PushathonGame extends Game{
 				Assets.instance.init(new AssetManager());
 
 				// Start game at menu screen
-				setScreen(new GameScreen(this));
+				setScreen(new HelpScreen(this));
 		
 	}
 

@@ -17,12 +17,12 @@
 
 package core.september.pushathon.workers;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.math.Rectangle;
+import java.lang.ref.WeakReference;
 
-import core.september.foundation.util.Constants;
+import com.badlogic.gdx.Game;
+
+import core.september.foundation.AbstractGameScreen;
+import core.september.foundation.DirectedGame;
 import core.september.pushathon.gameobjects.GameResources;
 
 
@@ -30,14 +30,15 @@ public abstract class GameController {
 
 	private static final String TAG = GameController.class.getName();
 
-	private Game game;
+	protected DirectedGame game;
 	public GameResources resources;
+	public WeakReference<AbstractGameScreen> currentScreen;
 	
 	// Rectangles for collision detection
 
 	private float timeLeftGameOverDelay;
 
-	public GameController (Game game) {
+	public GameController (DirectedGame game) {
 		this.game = game;
 		init();
 	}
@@ -48,6 +49,14 @@ public abstract class GameController {
 
 	private void initLevel () {
 		resources = new GameResources("no file");
+	}
+	
+	public AbstractGameScreen getCurrentScreen() {
+		return currentScreen.get();
+	}
+	
+	public void setCurrentScreen(AbstractGameScreen screen) {
+		currentScreen = new WeakReference<AbstractGameScreen>(screen);
 	}
 	
 	public abstract void update(float delta);

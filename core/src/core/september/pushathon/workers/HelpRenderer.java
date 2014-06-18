@@ -17,6 +17,8 @@
 
 package core.september.pushathon.workers;
 
+import java.util.logging.Level;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -35,6 +37,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 import core.september.foundation.Assets;
 import core.september.foundation.util.Constants;
+import core.september.pushathon.gameobjects.HelpNavigation;
 import core.september.pushathon.shaders.Shader;
 
 
@@ -47,6 +50,7 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 	public Rectangle boundsNext;
 	public int step;
 	protected boolean touchLock = true;
+	
 	
 	private InputAdapter iAdapter;
 
@@ -63,10 +67,44 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		upCamera.setToOrtho(true);
 	}
 	
+	public void resize (int width, int height) {
+		super.resize(width, height);
+    	resize(width,height,upCamera);
+	}
+	
 	 public void render() {
 		 super.render();
+		 
+		 upCamera.position.set(Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/2, 0);
+		 upCamera.update();
+		 renderUpControls(upBatch);
+		 
+		 
 	 }
-
+	protected void renderUpControls (SpriteBatch batch) { 
+		 batch.setProjectionMatrix(upCamera.combined);
+		 batch.begin();
+		 bounds = gameController.resources.prev.getScaled(scale);
+		 boundsNext = gameController.resources.next.getScaled(scale);
+		 renderUpControlsNavigation(batch);
+		 batch.end();
+	 }
+	 
+	 protected void renderUpControlsNavigation (SpriteBatch batch) { 
+		if(step > Constants.LOW_HELP_STEP) {
+			TextureRegion prev = gameController.resources.prev.prev;
+			Rectangle prevSquare = gameController.resources.prev.getScaled(scale);
+			batch.draw(prev,prevSquare.x,prevSquare.y,prevSquare.getWidth(),prevSquare.getHeight() );
+		}
+		
+		TextureRegion next = step == Constants.MAX_HELP_STEP ?
+				gameController.resources.next.play : gameController.resources.next.next;
+		Rectangle nextSquare = gameController.resources.next.getScaled(scale);
+		batch.draw(next,nextSquare.x,nextSquare.y,nextSquare.getWidth(),nextSquare.getHeight() );
+		
+		
+	 }
+	 
 	protected void renderGame (SpriteBatch batch) {
 		batch.setProjectionMatrix(camera.combined);
 		batch.setShader(Shader.grayscaleShader);
@@ -87,6 +125,13 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		@Override
 		public boolean touchDown (int screenX, int screenY, int pointer, int button) {
 			touchBounds = new Vector2(screenX, screenY);
+			if(isNextTouched()) {
+				step++;
+				((HelpController)gameController).prevNextTouched();
+			}
+			else if(isPrevTouched()) {
+				step--;
+			}
 			return true;
 		}
 
@@ -106,7 +151,7 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 			if(touchBounds != null && touchLock) {
 				//touchpoint = new Rectangle(touchBounds.x, touchBounds.y, 1, 1);
 				touchLock = false;
-				Vector3 unproject = camera.unproject(new Vector3(touchBounds.x, touchBounds.y, 0));
+				Vector3 unproject = upCamera.unproject(new Vector3(touchBounds.x, touchBounds.y, 0));
 				touchpoint = new Rectangle(unproject.x,unproject.y,1,1);
 				return boundsNext.overlaps(touchpoint);
 			}
@@ -114,10 +159,10 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		}
 		
 		protected boolean isPrevTouched() {
-			if(touchBounds != null && touchLock) {
+			if(touchBounds != null && touchLock && step > Constants.LOW_HELP_STEP) {
 				touchLock = false;
 				//touchpoint = new Rectangle(touchBounds.x, touchBounds.y, 1, 1);
-				Vector3 unproject = camera.unproject(new Vector3(touchBounds.x, touchBounds.y, 0));
+				Vector3 unproject = upCamera.unproject(new Vector3(touchBounds.x, touchBounds.y, 0));
 				touchpoint = new Rectangle(unproject.x,unproject.y,1,1);
 				return bounds.overlaps(touchpoint);
 			}

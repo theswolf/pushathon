@@ -1,14 +1,13 @@
 package core.september.pushathon.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.InputProcessor;
 
 import core.september.foundation.AbstractGameScreen;
+import core.september.foundation.DirectedGame;
 import core.september.foundation.util.Constants;
 import core.september.foundation.util.GamePreferences;
 import core.september.pushathon.workers.GameController;
-import core.september.pushathon.workers.GameRenderer;
 import core.september.pushathon.workers.HelpController;
 import core.september.pushathon.workers.HelpRenderer;
 
@@ -21,7 +20,7 @@ public class HelpScreen extends AbstractGameScreen {
 	private boolean paused;
 
 
-	public HelpScreen (Game game) {
+	public HelpScreen (DirectedGame game) {
 		super(game);
 	}
 	
@@ -53,6 +52,7 @@ public class HelpScreen extends AbstractGameScreen {
 	public void show () {
 		GamePreferences.instance.load();
 		gameController = new HelpController(game);
+		gameController.setCurrentScreen(this);
 		helpRenderer = new HelpRenderer(gameController,Constants.LOW_HELP_STEP);
 		Gdx.input.setCatchBackKey(true);
 	}
@@ -73,6 +73,14 @@ public class HelpScreen extends AbstractGameScreen {
 		super.resume();
 		// Only called on Android!
 		paused = false;
+	}
+
+
+
+	@Override
+	public InputProcessor getInputProcessor() {
+		// TODO Auto-generated method stub
+		return helpRenderer;
 	}
 
 }

@@ -76,6 +76,7 @@ public abstract class BatchRenderer extends InputAdapter implements Disposable {
     	//Gdx.gl.glClearColor(0x64 / 255.0f, 0x95 / 255.0f, 0xed / 255.0f, 0xff / 255.0f);
     	Gdx.gl.glClearColor(Color.LIGHT_GRAY.r,Color.LIGHT_GRAY.g,Color.LIGHT_GRAY.b,Color.LIGHT_GRAY.a);
     	 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    	 Gdx.gl.glEnable(GL20.GL_ARRAY_BUFFER_BINDING);
 		// Clears the screen
     	// update camera
 		
@@ -241,14 +242,8 @@ public abstract class BatchRenderer extends InputAdapter implements Disposable {
 		
 		batch.setColor(1, 1, 1, 1);
 	}
-
-    public void resize (int width, int height) {
-
-//		camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / (float)height) * (float)width;
-//		camera.
-//		camera.update();
-		
-		float ASPECT_RATIO = Constants.VIEWPORT_WIDTH/Constants.VIEWPORT_HEIGHT;
+    protected void resize (int width, int height,OrthographicCamera selectedCamera) {
+    	float ASPECT_RATIO = Constants.VIEWPORT_WIDTH/Constants.VIEWPORT_HEIGHT;
 		float aspectRatio = (float)width/(float)height;
         
         Vector2 crop = new Vector2(0f, 0f);
@@ -270,8 +265,11 @@ public abstract class BatchRenderer extends InputAdapter implements Disposable {
         float w = (float)Constants.VIEWPORT_WIDTH*scale;
         float h = (float)Constants.VIEWPORT_HEIGHT*scale;
         viewport = new Rectangle(crop.x, crop.y, w, h);
-        camera.viewportHeight = h;
-        camera.viewportWidth = w;
+        selectedCamera.viewportHeight = h;
+        selectedCamera.viewportWidth = w;
+    }
+    public void resize (int width, int height) {
+    	resize(width,height,camera);
 	}
 
 	@Override

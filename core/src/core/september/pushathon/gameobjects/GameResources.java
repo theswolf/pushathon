@@ -65,6 +65,9 @@ public class GameResources {
 	public PowerButton powerButton;
 	public Led powerLed;
 	
+	public HelpNavigation next;
+	public HelpNavigation prev;
+	
 	public int score = 0;
 	public boolean started = false;
 
@@ -124,9 +127,23 @@ public class GameResources {
 				squareCounter.height,
 				1);
 		
+		
+		
 		powerButton = new PowerButton(buttonSquare.x - Assets.instance.powerButton.off.getRegionWidth()*1.8f, buttonSquare.y, Assets.instance.powerButton.off.getRegionWidth(), Assets.instance.powerButton.on.getRegionHeight());
 		square = powerButton.getScaled(1f);
 		powerLed = new Led(square.x - Assets.instance.led.off.getRegionWidth()*0.5f*0.5f +square.getWidth()/2 ,square.y + square.height*1.2f,Assets.instance.led.off.getRegionWidth()*0.5f, Assets.instance.led.off.getRegionHeight()*0.5f);
+		
+		prev  = new HelpNavigation(
+				10,
+				(Constants.VIEWPORT_HEIGHT - Assets.instance.assetUi.prev.getRegionHeight())*0.9f,
+				Assets.instance.assetUi.prev.getRegionWidth()
+				,Assets.instance.assetUi.prev.getRegionHeight());
+		
+		next  = new HelpNavigation(
+				(Constants.VIEWPORT_WIDTH - Assets.instance.assetUi.next.getRegionWidth() - 10),
+				(Constants.VIEWPORT_HEIGHT - Assets.instance.assetUi.next.getRegionHeight())*0.9f,
+				Assets.instance.assetUi.next.getRegionWidth()
+				,Assets.instance.assetUi.next.getRegionHeight());
 		Gdx.app.debug(TAG, "level '" + filename + "' loaded");
 	}
 
