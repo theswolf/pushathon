@@ -21,6 +21,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -51,13 +52,29 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetPowerButton powerButton;
 	public AssetLed led;
 	public AssetFonts fonts;
-	
+	public AssetSoundKnob knob;
+	public AssetSounds sounds;
 	public AssetUi assetUi;
 	
 	private static final String font = "fonts/impact.fnt";
 
 	// singleton: prevent instantiation from other classes
 	private Assets () {
+	}
+	
+	public class AssetSounds {
+//		/home/trim/git/pushathon/android/assets/sounds/engine_on.wav
+//		/home/trim/git/pushathon/android/assets/sounds/level_switch.wav
+//		/home/trim/git/pushathon/android/assets/sounds/push_button.wav
+		public final Sound engine_on;
+		public final Sound level_switch;
+		public final Sound push_button;
+
+		public AssetSounds (AssetManager am) {
+			engine_on = am.get("sounds/engine_on.wav", Sound.class);
+			level_switch = am.get("sounds/level_switch.wav", Sound.class);
+			push_button = am.get("sounds/push_button.wav", Sound.class);
+		}
 	}
 	
 	public class AssetUi {
@@ -77,7 +94,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		public AssetFonts () {
 			// create three fonts using Libgdx's 15px bitmap font
-			defaultNormal = new BitmapFont(Gdx.files.internal(font), true);
+			defaultNormal = new BitmapFont(Gdx.files.internal(font), false);
 			defaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		}
 	}
@@ -97,6 +114,15 @@ public class Assets implements Disposable, AssetErrorListener {
 		public AssetLed (TextureAtlas atlas) {
 			on = atlas.findRegion("ledOn");
 			off = atlas.findRegion("ledOff");
+		}
+	}
+	
+	public class AssetSoundKnob{
+		public final AtlasRegion on;
+		public final AtlasRegion off;
+		public AssetSoundKnob (TextureAtlas atlas) {
+			on = atlas.findRegion("sound_on");
+			off = atlas.findRegion("sound_off");
 		}
 	}
 	
@@ -152,6 +178,9 @@ public class Assets implements Disposable, AssetErrorListener {
 		assetManager.setErrorListener(this);
 		// load texture atlas
 		assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
+		assetManager.load("sounds/engine_on.wav", Sound.class);
+		assetManager.load("sounds/level_switch.wav", Sound.class);
+		assetManager.load("sounds/push_button.wav", Sound.class);
 		// start loading assets and wait until finished
 		assetManager.finishLoading();
 
@@ -168,13 +197,17 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 
 		// create game resource objects
+		sounds = new AssetSounds(assetManager);
 		button = new AssetButton(atlas);
 		background = new AssetBackground(atlas);
 		countdown = new AssetCountDown(atlas);
 		powerButton = new AssetPowerButton(atlas);
 		led = new AssetLed(atlas);
 		assetUi = new AssetUi(atlas);
+		knob = new AssetSoundKnob(atlas);
 		fonts = new AssetFonts();
+		
+		
 		
 	}
 

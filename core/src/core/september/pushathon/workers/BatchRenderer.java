@@ -34,6 +34,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 import core.september.foundation.Assets;
 import core.september.foundation.util.Constants;
+import core.september.pushathon.gameobjects.Sound;
 
 
 public abstract class BatchRenderer extends InputAdapter implements Disposable {
@@ -105,11 +106,26 @@ public abstract class BatchRenderer extends InputAdapter implements Disposable {
 		renderButton(batch);
 		renderCounter(batch);
 		renderScorer(batch);
+		renderSound (batch);
 		//renderText(batch);
 		
 		batch.end();
 	}
 	
+    protected void renderSound (SpriteBatch batch) {
+    	TextureRegion  reg = null;
+		reg = gameController.resources.soundUi.getActualRegion();
+		Rectangle myBounds = gameController.resources.soundUi.getScaled(scale);
+		batch.draw(reg, 
+				myBounds.x,
+				myBounds.y,
+				myBounds.width,
+				myBounds.height
+				);
+		
+		batch.setColor(1, 1, 1, 1);
+	}
+    
     protected void renderText (SpriteBatch batch) {
 		BitmapFont font = Assets.instance.fonts.defaultNormal;
 		font.setColor(Color.ORANGE);
@@ -276,5 +292,13 @@ public abstract class BatchRenderer extends InputAdapter implements Disposable {
 	public void dispose () {
 		batch.dispose();
 		shape.dispose();
+	}
+	
+	protected boolean checkSound(Vector2 touchedBounds, OrthographicCamera ortoCamera) {
+		if(touchedBounds != null) {
+			Vector3 unproject = ortoCamera.unproject(new Vector3(touchedBounds.x, touchedBounds.y, 0));
+			return gameController.resources.soundUi.getScaled(scale).overlaps(new Rectangle(unproject.x,unproject.y,1,1));
+		}
+		return false;
 	}
 }

@@ -60,6 +60,6 @@ public class Constants {
 	public static final float TIME_GONE = 0.9f;
 	
 	public static final int LOW_HELP_STEP = 0;
-	public static final int MAX_HELP_STEP = 4;
+	public static final int MAX_HELP_STEP = 2;
 
 }

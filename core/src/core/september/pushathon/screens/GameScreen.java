@@ -26,7 +26,7 @@ public class GameScreen extends AbstractGameScreen {
 	@Override
 	public void render (float deltaTime) {
 		// Do not update game world when paused.
-		if (!paused && gameController.timeLeft > Constants.TIME_GONE) {
+		if (!paused && gameController.timeLeft > Constants.TIME_GONE && gameController.resources.started) {
 			// Update game world by the time that has passed
 			// since last rendered frame.
 			gameController.update(deltaTime);
@@ -59,6 +59,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public void pause () {
+		saveSettings();
 		paused = true;
 	}
 
@@ -69,11 +70,7 @@ public class GameScreen extends AbstractGameScreen {
 		paused = false;
 	}
 
-	@Override
-	public InputProcessor getInputProcessor() {
-		// TODO Auto-generated method stub
-		return gameRenderer;
-	}
+	
 
 	
 }

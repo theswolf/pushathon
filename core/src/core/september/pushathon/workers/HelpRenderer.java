@@ -17,27 +17,28 @@
 
 package core.september.pushathon.workers;
 
-import java.util.logging.Level;
+import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
 import core.september.foundation.Assets;
+import core.september.foundation.AudioManager;
 import core.september.foundation.util.Constants;
-import core.september.pushathon.gameobjects.HelpNavigation;
+import core.september.foundation.util.GamePreferences;
+import core.september.pushathon.gameobjects.Counter;
+import core.september.pushathon.gameobjects.Led;
+import core.september.pushathon.gameobjects.PowerButton;
+import core.september.pushathon.gameobjects.PushButton;
 import core.september.pushathon.shaders.Shader;
 
 
@@ -51,21 +52,56 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 	public int step;
 	protected int lastStep;
 	protected boolean touchLock = true;
+	private TweenManager manager;
+	
+	private PowerButton powerButton;
+	private Led powerLed;
+	
+	private PushButton pushButton;
+	
+	public Counter counterDH;
+	public Counter counterUH;
+	
+	private BitmapFont font;
 	
 	
 	private InputAdapter iAdapter;
 
 	
-	public HelpRenderer(GameController gameController,int step) {
+	public HelpRenderer(GameController gameController,TweenManager manager,int step) {
 		super(gameController);
 		this.step = step;
+		this.manager = manager;
 	}
 	
 	protected void init () {
 		super.init();
+		prepareTweens();
 		upBatch = new SpriteBatch();
 		upCamera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
-		upCamera.setToOrtho(true);
+		//upCamera.setToOrtho(true);
+		font = Assets.instance.fonts.defaultNormal;
+		font.setColor(Color.ORANGE);
+		font.scale(0.1f);
+		
+		
+	}
+	
+	private void prepareTweens() {
+		//power Unit
+		Rectangle dimension = gameController.resources.powerButton.getScaled(scale);
+		powerButton = new PowerButton(dimension.x, dimension.y, dimension.width, dimension.height);
+		dimension = gameController.resources.powerLed.getScaled(scale);
+		powerLed = new Led(dimension.x, dimension.y, dimension.width, dimension.height);
+		dimension = gameController.resources.button.getScaled(scale);
+		pushButton = new PushButton(dimension.x, dimension.y, dimension.width, dimension.height);
+		dimension = gameController.resources.counterD.getScaled(scale);
+		counterDH = new Counter(dimension.x, dimension.y, dimension.width, dimension.height,10);
+		dimension = gameController.resources.counterU.getScaled(scale);
+		counterUH = new Counter(dimension.x, dimension.y, dimension.width, dimension.height,1);
+		
+		counterDH.update(81);
+		counterUH.update(81);
 	}
 	
 	public void resize (int width, int height) {
@@ -78,23 +114,105 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		 
 		 upCamera.position.set(Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/2, 0);
 		 upCamera.update();
+		 upBatch.setProjectionMatrix(upCamera.combined);
+		 upBatch.begin();
 		 renderViewableObjects(upBatch);
 		 renderUpControls(upBatch);
-		 
-		 
+		 renderSound(upBatch);
+		 upBatch.end();
 	 }
 	
 	protected void renderViewableObjects (SpriteBatch batch) { 
+		switch (step) {
+		case 0:
+			renderViewableObjects0(batch);
+			break;
+
+		case 1:
+			renderViewableObjects1(batch);
+			break;
+		
+		case 2:
+			renderViewableObjects2(batch);
+		break;
+		
+		}
+	}
+	
+	private void renderViewableObjects0 (SpriteBatch batch) { 
+		TextureRegion  reg = powerButton.on;
+		Rectangle myBounds = powerButton.getScaled(scale);
+		batch.draw(reg, 
+				myBounds.x,
+				myBounds.y,
+				myBounds.width,
+				myBounds.height
+				);
+		TextureRegion ledReg =  powerLed.on;
+		myBounds = powerLed.getScaled(scale);
+		batch.draw(ledReg, 
+				myBounds.x,
+				myBounds.y,
+				myBounds.width,
+				myBounds.height
+				);
+		
+		font.drawMultiLine(batch, "Start up \nthe PushBox...", upCamera.viewportWidth*0.2f, upCamera.viewportHeight*0.9f);
 		
 	}
+	
+	private void renderViewableObjects1 (SpriteBatch batch) { 
+		TextureRegion  reg = pushButton.up;
+		Rectangle myBounds = pushButton.getScaled(scale);
+		batch.draw(reg, 
+				myBounds.x,
+				myBounds.y,
+				myBounds.width,
+				myBounds.height
+				);
+		font.drawMultiLine(batch, "Push the \nred button...", upCamera.viewportWidth*0.2f, upCamera.viewportHeight*0.9f);
+		
+	}
+	
+	private void renderViewableObjects2 (SpriteBatch batch) { 
+		TextureRegion  reg = counterDH.selected;
+		Rectangle myBounds = counterDH.getScaled(scale);
+		batch.draw(reg, 
+				myBounds.x,
+				myBounds.y,
+				myBounds.width,
+				myBounds.height
+				);
+		TextureRegion  reg2 = counterUH.selected;
+		myBounds = counterUH.getScaled(scale);
+		batch.draw(reg2, 
+				myBounds.x,
+				myBounds.y,
+				myBounds.width,
+				myBounds.height
+				);
+		
+		font.drawMultiLine(batch, "Before \ntime finsh...", upCamera.viewportWidth*0.2f, upCamera.viewportHeight*0.9f);
+		
+	}
+	
+//	private void manageTween(int step) {
+//		Tween.from(powerButton, ElementAccessor.POSITION_XY, 1.0f)
+//	    .target(0, 0)
+//	    .start(manager);
+//		
+//		Tween.from(powerLed, ElementAccessor.POSITION_XY, 1.0f)
+//	    .target(0, 0)
+//	    .start(manager);
+//	}
+//	
 	 
 	protected void renderUpControls (SpriteBatch batch) { 
-		 batch.setProjectionMatrix(upCamera.combined);
-		 batch.begin();
+		 
+		 
 		 bounds = gameController.resources.prev.getScaled(scale);
 		 boundsNext = gameController.resources.next.getScaled(scale);
 		 renderUpControlsNavigation(batch);
-		 batch.end();
 	 }
 	 
 	 protected void renderUpControlsNavigation (SpriteBatch batch) { 
@@ -116,10 +234,6 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		batch.setProjectionMatrix(camera.combined);
 		batch.setShader(Shader.grayscaleShader);
 		batch.begin();
-		//gameController.level.render(batch);
-		//renderBack(batch);
-		bounds = gameController.resources.started? gameController.resources.button.getScaled(scale) :
-			gameController.resources.powerButton.getScaled(scale);
 		renderPowerUnit(batch);
 		renderButton(batch);
 		renderCounter(batch);
@@ -132,13 +246,24 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		@Override
 		public boolean touchDown (int screenX, int screenY, int pointer, int button) {
 			touchBounds = new Vector2(screenX, screenY);
-			if(isNextTouched()) {
-				stepUp();
+			if (checkSound(touchBounds,upCamera)) {
+				GamePreferences.instance.sound = !GamePreferences.instance.sound;
+			}
+			if(isNextTouched() && touchLock) {
+				AudioManager.instance.play(Assets.instance.sounds.level_switch);
+				if(step < Constants.MAX_HELP_STEP) {
+					stepUp();
+				}
+				else {
+					((HelpController)gameController).play();
+				}
 				
 			}
-			else if(isPrevTouched()) {
+			else if(isPrevTouched() && touchLock) {
+				AudioManager.instance.play(Assets.instance.sounds.level_switch);
 				stepDown();
 			}
+			touchLock = false;
 			return true;
 		}
 
@@ -157,7 +282,7 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		protected boolean isNextTouched() {
 			if(touchBounds != null && touchLock) {
 				//touchpoint = new Rectangle(touchBounds.x, touchBounds.y, 1, 1);
-				touchLock = false;
+				
 				Vector3 unproject = upCamera.unproject(new Vector3(touchBounds.x, touchBounds.y, 0));
 				touchpoint = new Rectangle(unproject.x,unproject.y,1,1);
 				return boundsNext.overlaps(touchpoint);
@@ -165,9 +290,10 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 			return false;
 		}
 		
+		
 		protected boolean isPrevTouched() {
 			if(touchBounds != null && touchLock && step > Constants.LOW_HELP_STEP) {
-				touchLock = false;
+				
 				//touchpoint = new Rectangle(touchBounds.x, touchBounds.y, 1, 1);
 				Vector3 unproject = upCamera.unproject(new Vector3(touchBounds.x, touchBounds.y, 0));
 				touchpoint = new Rectangle(unproject.x,unproject.y,1,1);

@@ -33,7 +33,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
 import core.september.foundation.Assets;
+import core.september.foundation.AudioManager;
 import core.september.foundation.util.Constants;
+import core.september.foundation.util.GamePreferences;
 
 
 public class GameRenderer extends BatchRenderer implements Disposable {
@@ -53,10 +55,15 @@ public class GameRenderer extends BatchRenderer implements Disposable {
 		@Override
 		public boolean touchDown (int screenX, int screenY, int pointer, int button) {
 			touchBounds = new Vector2(screenX, screenY);
+			if (checkSound(touchBounds,camera)) {
+				GamePreferences.instance.sound = !GamePreferences.instance.sound;
+			}
 			if(!gameController.resources.started && isTouched()) {
 				gameController.resources.started = true;
+				AudioManager.instance.play(Assets.instance.sounds.engine_on);
 			}
 			else if(increasable && isTouched()) {
+				AudioManager.instance.play(Assets.instance.sounds.push_button);
 				increasable = ((GamePlayController) gameController).increaseScore();
 			}
 			return true;
@@ -78,6 +85,8 @@ public class GameRenderer extends BatchRenderer implements Disposable {
 			}
 			return false;
 		}
+
+		
 	}
 
 	

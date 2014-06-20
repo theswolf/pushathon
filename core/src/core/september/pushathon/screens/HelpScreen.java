@@ -1,5 +1,7 @@
 package core.september.pushathon.screens;
 
+import aurelienribon.tweenengine.TweenManager;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -16,12 +18,14 @@ public class HelpScreen extends AbstractGameScreen {
 
 	private GameController gameController;
 	private HelpRenderer helpRenderer;
+	private TweenManager manager;
 
 	private boolean paused;
 
 
 	public HelpScreen (Game game) {
 		super(game);
+		manager = new TweenManager();
 	}
 	
 	
@@ -33,6 +37,7 @@ public class HelpScreen extends AbstractGameScreen {
 			// Update game world by the time that has passed
 			// since last rendered frame.
 			gameController.update(deltaTime);
+			manager.update(deltaTime);
 		}
 		// Sets the clear screen color to: Cornflower Blue
 	
@@ -53,7 +58,7 @@ public class HelpScreen extends AbstractGameScreen {
 		GamePreferences.instance.load();
 		gameController = new HelpController(game);
 		gameController.setCurrentScreen(this);
-		helpRenderer = new HelpRenderer(gameController,Constants.LOW_HELP_STEP);
+		helpRenderer = new HelpRenderer(gameController,manager,Constants.LOW_HELP_STEP);
 		Gdx.input.setCatchBackKey(true);
 	}
 
@@ -65,22 +70,20 @@ public class HelpScreen extends AbstractGameScreen {
 
 	@Override
 	public void pause () {
+		saveSettings();
 		paused = true;
+		manager.pause();
 	}
 
 	@Override
 	public void resume () {
 		super.resume();
+		manager.resume();
 		// Only called on Android!
 		paused = false;
 	}
 
 
-
-	@Override
-	public InputProcessor getInputProcessor() {
-		// TODO Auto-generated method stub
-		return helpRenderer;
-	}
+	
 
 }

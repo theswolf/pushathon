@@ -23,6 +23,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 
 import core.september.foundation.util.Constants;
+import core.september.foundation.util.GamePreferences;
 
 public abstract class AbstractGameScreen implements Screen {
 
@@ -49,12 +50,16 @@ public abstract class AbstractGameScreen implements Screen {
 
 	public void resume () {
 		Assets.instance.init(new AssetManager());
+		GamePreferences.instance.load();
 	}
 
 	public void dispose () {
 		Assets.instance.dispose();
 	}
 	
-	public abstract InputProcessor getInputProcessor ();
+	
+	protected  void saveSettings () {
+		GamePreferences.instance.save();
+	}
 
 }
