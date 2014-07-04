@@ -23,7 +23,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -36,6 +35,7 @@ import core.september.foundation.AudioManager;
 import core.september.foundation.util.Constants;
 import core.september.foundation.util.GamePreferences;
 import core.september.pushathon.gameobjects.Counter;
+import core.september.pushathon.gameobjects.HelpText;
 import core.september.pushathon.gameobjects.Led;
 import core.september.pushathon.gameobjects.PowerButton;
 import core.september.pushathon.gameobjects.PushButton;
@@ -62,7 +62,9 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 	public Counter counterDH;
 	public Counter counterUH;
 	
-	private BitmapFont font;
+	//private BitmapFont font;
+	
+	private HelpText help;
 	
 	
 	private InputAdapter iAdapter;
@@ -80,9 +82,9 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		upBatch = new SpriteBatch();
 		upCamera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
 		//upCamera.setToOrtho(true);
-		font = Assets.instance.fonts.defaultNormal;
-		font.setColor(Color.ORANGE);
-		font.scale(0.1f);
+//		font = Assets.instance.fonts.defaultNormal;
+//		font.setColor(Color.ORANGE);
+//		font.scale(0.1f);
 		
 		
 	}
@@ -102,6 +104,8 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		
 		counterDH.update(81);
 		counterUH.update(81);
+		
+		help = buildHelpText();
 	}
 	
 	public void resize (int width, int height) {
@@ -140,59 +144,91 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 	}
 	
 	private void renderViewableObjects0 (SpriteBatch batch) { 
-		TextureRegion  reg = powerButton.on;
-		Rectangle myBounds = powerButton.getScaled(scale);
-		batch.draw(reg, 
-				myBounds.x,
-				myBounds.y,
-				myBounds.width,
-				myBounds.height
-				);
-		TextureRegion ledReg =  powerLed.on;
-		myBounds = powerLed.getScaled(scale);
-		batch.draw(ledReg, 
-				myBounds.x,
-				myBounds.y,
-				myBounds.width,
-				myBounds.height
-				);
+		if(((HelpController) gameController).visible) {
+			TextureRegion  reg = powerButton.on;
+			Rectangle myBounds = powerButton.getScaled(scale);
+			batch.draw(reg, 
+					myBounds.x,
+					myBounds.y,
+					myBounds.width,
+					myBounds.height
+					);
+			TextureRegion ledReg =  powerLed.on;
+			myBounds = powerLed.getScaled(scale);
+			batch.draw(ledReg, 
+					myBounds.x,
+					myBounds.y,
+					myBounds.width,
+					myBounds.height
+					);
+		}
 		
-		font.drawMultiLine(batch, "Start up \nthe PushBox...", upCamera.viewportWidth*0.2f, upCamera.viewportHeight*0.9f);
 		
+		//font.drawMultiLine(batch, "Start up \nthe PushBox...", upCamera.viewportWidth*0.2f, upCamera.viewportHeight*0.9f);
+		TextureRegion helpRegion = help.getHelp(step+1);
+		Rectangle helpScaled = help.getScaled(scale);
+		batch.draw(helpRegion, 
+				helpScaled.x,
+				helpScaled.y,
+				helpScaled.width,
+				helpScaled.height
+				);
 	}
 	
 	private void renderViewableObjects1 (SpriteBatch batch) { 
-		TextureRegion  reg = pushButton.up;
-		Rectangle myBounds = pushButton.getScaled(scale);
-		batch.draw(reg, 
-				myBounds.x,
-				myBounds.y,
-				myBounds.width,
-				myBounds.height
+		
+		if(((HelpController) gameController).visible) { 
+			TextureRegion  reg = pushButton.up;
+			Rectangle myBounds = pushButton.getScaled(scale);
+			batch.draw(reg, 
+					myBounds.x,
+					myBounds.y,
+					myBounds.width,
+					myBounds.height
+					);
+		}
+		
+		TextureRegion helpRegion = help.getHelp(step+1);
+		Rectangle helpScaled = help.getScaled(scale);
+		batch.draw(helpRegion, 
+				helpScaled.x,
+				helpScaled.y,
+				helpScaled.width,
+				helpScaled.height
 				);
-		font.drawMultiLine(batch, "Push the \nred button...", upCamera.viewportWidth*0.2f, upCamera.viewportHeight*0.9f);
 		
 	}
 	
 	private void renderViewableObjects2 (SpriteBatch batch) { 
-		TextureRegion  reg = counterDH.selected;
-		Rectangle myBounds = counterDH.getScaled(scale);
-		batch.draw(reg, 
-				myBounds.x,
-				myBounds.y,
-				myBounds.width,
-				myBounds.height
-				);
-		TextureRegion  reg2 = counterUH.selected;
-		myBounds = counterUH.getScaled(scale);
-		batch.draw(reg2, 
-				myBounds.x,
-				myBounds.y,
-				myBounds.width,
-				myBounds.height
-				);
+		if(((HelpController) gameController).visible) {  
+			TextureRegion  reg = counterDH.selected;
+			Rectangle myBounds = counterDH.getScaled(scale);
+			batch.draw(reg, 
+					myBounds.x,
+					myBounds.y,
+					myBounds.width,
+					myBounds.height
+					);
+			TextureRegion  reg2 = counterUH.selected;
+			myBounds = counterUH.getScaled(scale);
+			batch.draw(reg2, 
+					myBounds.x,
+					myBounds.y,
+					myBounds.width,
+					myBounds.height
+					);
+			
+		}
 		
-		font.drawMultiLine(batch, "Before \ntime finsh...", upCamera.viewportWidth*0.2f, upCamera.viewportHeight*0.9f);
+		
+		TextureRegion helpRegion = help.getHelp(step+1);
+		Rectangle helpScaled = help.getScaled(scale);
+		batch.draw(helpRegion, 
+				helpScaled.x,
+				helpScaled.y,
+				helpScaled.width,
+				helpScaled.height
+				);
 		
 	}
 	
@@ -303,11 +339,22 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		}
 		
 		public int stepUp() {
-			return step < Constants.MAX_HELP_STEP ? ++step : step;
+			step = step < Constants.MAX_HELP_STEP ? ++step : step;
+			help = buildHelpText();
+			return step;
 		}
 		
 		public int stepDown() {
-			return step > Constants.LOW_HELP_STEP ? --step : step;
+			step = step > Constants.LOW_HELP_STEP ? --step : step;
+			help = buildHelpText();
+			return step;
+		}
+		
+		private HelpText buildHelpText() {
+			return new HelpText(Constants.VIEWPORT_WIDTH/4, 
+					Constants.VIEWPORT_HEIGHT/2, 
+					HelpText.getHelp(step+1).getRegionWidth(), 
+					HelpText.getHelp(step+1).getRegionHeight());
 		}
 	}
 

@@ -55,6 +55,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetSoundKnob knob;
 	public AssetSounds sounds;
 	public AssetUi assetUi;
+	public AssetHelp assetHelp;
 	
 	private static final String font = "fonts/impact.fnt";
 
@@ -74,6 +75,18 @@ public class Assets implements Disposable, AssetErrorListener {
 			engine_on = am.get("sounds/engine_on.wav", Sound.class);
 			level_switch = am.get("sounds/level_switch.wav", Sound.class);
 			push_button = am.get("sounds/push_button.wav", Sound.class);
+		}
+	}
+	
+	public class AssetHelp {
+		public final AtlasRegion help01;
+		public final AtlasRegion help02;
+		public final AtlasRegion help03;
+		
+		public AssetHelp(TextureAtlas atlas) {
+			help01 = atlas.findRegion("help01");
+			help02 = atlas.findRegion("help02");
+			help03 = atlas.findRegion("help03");
 		}
 	}
 	
@@ -205,7 +218,9 @@ public class Assets implements Disposable, AssetErrorListener {
 		led = new AssetLed(atlas);
 		assetUi = new AssetUi(atlas);
 		knob = new AssetSoundKnob(atlas);
+		assetHelp = new AssetHelp(atlas);
 		fonts = new AssetFonts();
+		
 		
 		
 		
