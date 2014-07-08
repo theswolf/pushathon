@@ -76,6 +76,13 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 		this.manager = manager;
 	}
 	
+	@Override
+	public void dispose () {
+		super.dispose();
+		upBatch.dispose();
+	}
+	
+	
 	protected void init () {
 		super.init();
 		prepareTweens();
@@ -284,6 +291,7 @@ public class HelpRenderer extends BatchRenderer implements Disposable {
 			touchBounds = new Vector2(screenX, screenY);
 			if (checkSound(touchBounds,upCamera)) {
 				GamePreferences.instance.sound = !GamePreferences.instance.sound;
+				AudioManager.instance.onSettingsUpdated();
 			}
 			if(isNextTouched() && touchLock) {
 				AudioManager.instance.play(Assets.instance.sounds.level_switch);

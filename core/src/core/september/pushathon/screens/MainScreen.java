@@ -2,65 +2,66 @@ package core.september.pushathon.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 
 import core.september.foundation.AbstractGameScreen;
 import core.september.foundation.util.Constants;
 import core.september.foundation.util.GamePreferences;
-import core.september.pushathon.workers.GamePlayController;
-import core.september.pushathon.workers.GameRenderer;
+import core.september.pushathon.workers.BatchRenderer;
+import core.september.pushathon.workers.GameController;
+import core.september.pushathon.workers.MainController;
+import core.september.pushathon.workers.MainRenderer;
 
 
-public class GameScreen extends AbstractGameScreen {
+public class MainScreen extends AbstractGameScreen {
 
-	private GamePlayController gameController;
-	private GameRenderer gameRenderer;
+	private GameController gameController;
+	private BatchRenderer mainRenderer;
 
 	private boolean paused;
 
 
-	public GameScreen (Game game) {
+	public MainScreen (Game game) {
 		super(game);
 	}
+	
+	
 
 	@Override
 	public void render (float deltaTime) {
 		// Do not update game world when paused.
-		if (!paused && gameController.timeLeft > Constants.TIME_GONE && gameController.resources.started) {
+		if (!paused) {
 			// Update game world by the time that has passed
 			// since last rendered frame.
 			gameController.update(deltaTime);
 		}
-		else if (!paused && gameController.timeLeft < 0 && gameController.resources.started) {
-			gameController.timeLeft-=deltaTime;
-			if(gameController.timeLeft <= 0) {
-				game.setScreen(new MainScreen(game));
-			}
-		}
 		// Sets the clear screen color to: Cornflower Blue
 	
 		// Render game world to screen
-		gameRenderer.render();
+		mainRenderer.render();
 	}
+	
+	
 
 	@Override
 	public void resize (int width, int height) {
 		super.resize(width, height);
-		gameRenderer.resize(width, height);
+		mainRenderer.resize(width, height);
 	}
 
+	
+	
 	@Override
 	public void show () {
 		GamePreferences.instance.load();
-		gameController = new GamePlayController(game);
-		gameController.timeLeft = Constants.TIME_LEFT;
-		gameRenderer = new GameRenderer(gameController);
+		gameController = new MainController(game);
+		gameController.setCurrentScreen(this);
+		mainRenderer = new MainRenderer(gameController);
 		Gdx.input.setCatchBackKey(true);
 	}
 
 	@Override
 	public void hide () {
-		gameRenderer.dispose();
+		mainRenderer.dispose();
 		Gdx.input.setCatchBackKey(false);
 	}
 
@@ -77,7 +78,7 @@ public class GameScreen extends AbstractGameScreen {
 		paused = false;
 	}
 
-	
 
 	
+
 }

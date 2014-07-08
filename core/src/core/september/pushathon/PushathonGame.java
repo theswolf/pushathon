@@ -6,8 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 
 import core.september.foundation.Assets;
+import core.september.foundation.AudioManager;
 import core.september.foundation.util.GamePreferences;
 import core.september.pushathon.screens.HelpScreen;
+import core.september.pushathon.screens.MainScreen;
 
 public class PushathonGame extends Game{
 
@@ -20,7 +22,8 @@ public class PushathonGame extends Game{
 				Assets.instance.init(new AssetManager());
 				GamePreferences.instance.load();
 				// Start game at menu screen
-				setScreen(new HelpScreen(this));
+				AudioManager.instance.play(Assets.instance.assetMusic.soundtrack);
+				setScreen(new MainScreen(this));
 		
 	}
 

@@ -57,6 +57,7 @@ public class GameRenderer extends BatchRenderer implements Disposable {
 			touchBounds = new Vector2(screenX, screenY);
 			if (checkSound(touchBounds,camera)) {
 				GamePreferences.instance.sound = !GamePreferences.instance.sound;
+				AudioManager.instance.onSettingsUpdated();
 			}
 			if(!gameController.resources.started && isTouched()) {
 				gameController.resources.started = true;

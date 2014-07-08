@@ -21,10 +21,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Disposable;
@@ -56,7 +58,8 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetSounds sounds;
 	public AssetUi assetUi;
 	public AssetHelp assetHelp;
-	
+	public AssetSkin assetSkin;
+	public AssetMusic assetMusic;
 	private static final String font = "fonts/impact.fnt";
 
 	// singleton: prevent instantiation from other classes
@@ -78,6 +81,17 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 	}
 	
+	public class AssetMusic {
+//		/home/trim/git/pushathon/android/assets/sounds/engine_on.wav
+//		/home/trim/git/pushathon/android/assets/sounds/level_switch.wav
+//		/home/trim/git/pushathon/android/assets/sounds/push_button.wav
+		public final Music soundtrack;
+
+		public AssetMusic (AssetManager am) {
+			soundtrack = am.get("music/soundtrack.mp3", Music.class);
+		}
+	}
+	
 	public class AssetHelp {
 		public final AtlasRegion help01;
 		public final AtlasRegion help02;
@@ -87,6 +101,16 @@ public class Assets implements Disposable, AssetErrorListener {
 			help01 = atlas.findRegion("help01");
 			help02 = atlas.findRegion("help02");
 			help03 = atlas.findRegion("help03");
+		}
+	}
+	
+	public class AssetSkin {
+		public final NinePatch buttonTextUp;
+		public final NinePatch buttonTextDown;
+		
+		public AssetSkin(TextureAtlas atlas) {
+			buttonTextUp = atlas.createPatch("buttonTextUp");
+			buttonTextDown = atlas.createPatch("buttonTextDown");
 		}
 	}
 	
@@ -194,6 +218,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		assetManager.load("sounds/engine_on.wav", Sound.class);
 		assetManager.load("sounds/level_switch.wav", Sound.class);
 		assetManager.load("sounds/push_button.wav", Sound.class);
+		assetManager.load("music/soundtrack.mp3", Music.class);
 		// start loading assets and wait until finished
 		assetManager.finishLoading();
 
@@ -211,6 +236,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		// create game resource objects
 		sounds = new AssetSounds(assetManager);
+		assetMusic = new AssetMusic(assetManager);
 		button = new AssetButton(atlas);
 		background = new AssetBackground(atlas);
 		countdown = new AssetCountDown(atlas);
@@ -219,6 +245,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		assetUi = new AssetUi(atlas);
 		knob = new AssetSoundKnob(atlas);
 		assetHelp = new AssetHelp(atlas);
+		assetSkin = new AssetSkin(atlas);
 		fonts = new AssetFonts();
 		
 		

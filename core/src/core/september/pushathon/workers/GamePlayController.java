@@ -3,6 +3,7 @@ package core.september.pushathon.workers;
 import com.badlogic.gdx.Game;
 
 import core.september.foundation.util.Constants;
+import core.september.pushathon.screens.MainScreen;
 
 public class GamePlayController extends GameController{
 
@@ -13,6 +14,7 @@ public class GamePlayController extends GameController{
 	}
 	
 	public void update (float deltaTime) {
+		
 		timeLeft-=deltaTime;
 		resources.update(deltaTime);
 	}
