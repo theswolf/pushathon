@@ -2,6 +2,7 @@ package core.september.pushathon.workers;
 
 import com.badlogic.gdx.Game;
 
+import core.september.foundation.util.GamePreferences;
 import core.september.pushathon.screens.GameScreen;
 
 public class HelpController extends GameController{
@@ -26,6 +27,7 @@ public class HelpController extends GameController{
 	}
 
 	public void play() {
+		GamePreferences.instance.save();
 		game.setScreen(new GameScreen(game));// TODO Auto-generated method stub
 	}
 	

@@ -23,6 +23,7 @@ public class PushathonGame extends Game{
 				GamePreferences.instance.load();
 				// Start game at menu screen
 				AudioManager.instance.play(Assets.instance.assetMusic.soundtrack);
+				GamePreferences.instance.save();
 				setScreen(new MainScreen(this));
 		
 	}

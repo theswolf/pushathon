@@ -33,6 +33,9 @@ public abstract class AbstractGameScreen implements Screen {
 
 	public AbstractGameScreen (Game game) {
 		this.game = game;
+		if(AudioManager.instance.getPlayingMusic() == null) {
+			AudioManager.instance.play(Assets.instance.assetMusic.soundtrack);
+		}
 	}
 
 	public abstract void render (float deltaTime);

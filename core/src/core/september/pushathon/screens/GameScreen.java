@@ -34,6 +34,7 @@ public class GameScreen extends AbstractGameScreen {
 		else if (!paused && gameController.timeLeft <= Constants.TIME_GONE && gameController.resources.started) {
 			gameController.timeLeft-=deltaTime;
 			if(gameController.timeLeft <= 0) {
+				GamePreferences.instance.save();
 				game.setScreen(new MainScreen(game));
 			}
 		}
