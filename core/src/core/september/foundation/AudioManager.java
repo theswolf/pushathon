@@ -51,10 +51,10 @@ public class AudioManager {
 	public void play (Music music) {
 		playingMusic = music;
 		if (GamePreferences.instance.sound) {
-			music.setLooping(true);
+			playingMusic.setLooping(true);
 			//music.setVolume(GamePreferences.instance.volMusic);
-			music.setVolume(1);
-			music.play();
+			playingMusic.setVolume(1);
+			playingMusic.play();
 		}
 	}
 

@@ -80,7 +80,8 @@ public class MainRenderer extends BatchRenderer implements Disposable {
 		
 		buttonNewGame.setHeight(stage.getViewport().getViewportHeight()*0.10f); //** Button Height **//
 		buttonNewGame.setWidth(stage.getViewport().getViewportWidth()*0.30f); //** Button Width **//
-		buttonNewGame.setPosition(stage.getViewport().getViewportWidth()/2-buttonNewGame.getWidth()/2, stage.getViewport().getViewportHeight()- buttonNewGame.getHeight() - stage.getViewport().getViewportHeight()*0.10f); //** Button location **//
+		buttonNewGame.setPosition(stage.getViewport().getViewportWidth()/2-buttonNewGame.getWidth()/2, 
+				stage.getViewport().getViewportHeight()- buttonNewGame.getHeight() - stage.getViewport().getViewportHeight()*0.10f); //** Button location **//
 		buttonNewGame.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//Gdx.app.log("my app", "Pressed"); //** Usually used to start Game, etc. **//
@@ -94,7 +95,8 @@ public class MainRenderer extends BatchRenderer implements Disposable {
 		
 		buttonHelp.setHeight(stage.getViewport().getViewportHeight()*0.10f); //** Button Height **//
 		buttonHelp.setWidth(stage.getViewport().getViewportWidth()*0.30f); //** Button Width **//
-		buttonHelp.setPosition(stage.getViewport().getViewportWidth()/2-buttonHelp.getWidth()/2, stage.getViewport().getViewportHeight() - buttonNewGame.getHeight() -buttonHelp.getHeight() - stage.getViewport().getViewportHeight()*0.20f); //** Button location **//
+		buttonHelp.setPosition(stage.getViewport().getViewportWidth()/2-buttonHelp.getWidth()/2
+				, stage.getViewport().getViewportHeight() - buttonNewGame.getHeight() -buttonHelp.getHeight() - stage.getViewport().getViewportHeight()*0.20f); //** Button location **//
 		buttonHelp.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//Gdx.app.log("my app", "Pressed"); //** Usually used to start Game, etc. **//
@@ -104,9 +106,26 @@ public class MainRenderer extends BatchRenderer implements Disposable {
 
 		});
 		
+		buttonScore = new TextButton("score", style); //** Button text and style **//
+		
+		buttonScore.setHeight(stage.getViewport().getViewportHeight()*0.10f); //** Button Height **//
+		buttonScore.setWidth(stage.getViewport().getViewportWidth()*0.30f); //** Button Width **//
+		buttonScore.setPosition(stage.getViewport().getViewportWidth()/2-buttonScore.getWidth()/2
+				, stage.getViewport().getViewportHeight() - buttonNewGame.getHeight() -buttonHelp.getHeight() -buttonScore.getHeight() 
+				- stage.getViewport().getViewportHeight()*0.30f); //** Button location **//
+		buttonScore.addListener(new InputListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				//Gdx.app.log("my app", "Pressed"); //** Usually used to start Game, etc. **//
+				((MainController)gameController).score();
+				return true;
+			}
+
+		});
+		
 
 		stage.addActor(buttonNewGame);
 		stage.addActor(buttonHelp);
+		stage.addActor(buttonScore);
 	}
 
 

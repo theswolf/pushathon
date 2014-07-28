@@ -16,6 +16,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener getApplicationListener () {
-                return new PushathonGame();
+                return new PushathonGame(null);
         }
 }

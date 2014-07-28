@@ -75,7 +75,7 @@ public abstract class BatchRenderer extends InputAdapter implements Disposable {
     {
         
     	//Gdx.gl.glClearColor(0x64 / 255.0f, 0x95 / 255.0f, 0xed / 255.0f, 0xff / 255.0f);
-    	Gdx.gl.glClearColor(Color.LIGHT_GRAY.r,Color.LIGHT_GRAY.g,Color.LIGHT_GRAY.b,Color.LIGHT_GRAY.a);
+    	Gdx.gl.glClearColor(Color.DARK_GRAY.r,Color.DARK_GRAY.g,Color.DARK_GRAY.b,Color.DARK_GRAY.a);
     	 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     	 Gdx.gl.glEnable(GL20.GL_ARRAY_BUFFER_BINDING);
 		// Clears the screen

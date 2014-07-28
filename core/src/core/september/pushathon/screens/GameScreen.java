@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import core.september.foundation.AbstractGameScreen;
 import core.september.foundation.util.Constants;
 import core.september.foundation.util.GamePreferences;
+import core.september.pushathon.PushathonGame;
 import core.september.pushathon.workers.GamePlayController;
 import core.september.pushathon.workers.GameRenderer;
 
@@ -35,6 +36,7 @@ public class GameScreen extends AbstractGameScreen {
 			gameController.timeLeft-=deltaTime;
 			if(gameController.timeLeft <= 0) {
 				GamePreferences.instance.save();
+				((PushathonGame)game).actionResolver.submitScoreGPGS(gameController.getScore());
 				game.setScreen(new MainScreen(game));
 			}
 		}

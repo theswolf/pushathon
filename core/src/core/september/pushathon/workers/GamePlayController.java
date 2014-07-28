@@ -23,5 +23,9 @@ public class GamePlayController extends GameController{
 		resources.score+=1;
 		return false;
 	}
+	
+	public int getScore() {
+		return resources.score;
+	}
 
 }
