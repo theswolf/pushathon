@@ -71,6 +71,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelperLis
 		
 		initialize(new PushathonGame(this), config);
 		gameHelper.setup(this);
+		gameHelper.setConnectOnStart(false);
 	}
 
 

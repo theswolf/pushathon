@@ -17,6 +17,11 @@
 package com.google.example.games.basegameutils;
 
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,6 +39,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.Api.ApiOptions.NoOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Games.GamesOptions;
@@ -1067,10 +1073,70 @@ public class GameHelper implements GoogleApiClient.ConnectionCallbacks,
     }
 
     private GamesClient gclient ;
-	public GamesClient getGamesClient() {
-		if(gclient == null) {
-			gclient = new GamesClient(this);
+    
+    private GamesClient getRealGamesClient(GamesClient input) {
+    	if(gclient == null) {
+			gclient = input == null ? new GamesClient(this) : input;
 		}
 		return gclient;
+    }
+    
+	public GamesClient getGamesClient() {
+		
+		 if (mGoogleApiClient.isConnected()) {
+             Log.w(TAG,
+                     "GameHelper: client was already connected on onStart()");
+             return getRealGamesClient(gclient);
+         } else {
+        	 
+        	 final FutureTask<GamesClient> futureTask = new FutureTask<GamesClient>(new ClientCallable(this));
+        	 final ExecutorService executor = Executors.newSingleThreadExecutor();
+        	 
+        	 
+             debugLog("Connecting client.");
+             mConnecting = true;
+             mGoogleApiClient.connect();
+             mGoogleApiClient.registerConnectionCallbacks(new ConnectionCallbacks() {
+				
+				@Override
+				public void onConnectionSuspended(int cause) {
+					 Log.d(TAG,
+		                     "GameHelper: onConnectionSuspended due to cause "+cause);
+					 mListener.onSignInFailed();
+				}
+				
+				@Override
+				public void onConnected(Bundle connectionHint) {
+					executor.execute(futureTask);
+					
+				}
+			});
+             
+             try {
+				return getRealGamesClient(futureTask.get());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Log.e(TAG,e.getMessage(),e);
+				return null;
+			}
+         }
+		
+		
+	}
+	
+	private class ClientCallable implements Callable<GamesClient> {
+
+		private GameHelper helper;
+		public ClientCallable(GameHelper helper) {
+			super();
+			this.helper = helper;
+		}
+		
+		@Override
+		public GamesClient call() throws Exception {
+			// TODO Auto-generated method stub
+			return  new GamesClient(helper);
+		}
+		
 	}
 }
