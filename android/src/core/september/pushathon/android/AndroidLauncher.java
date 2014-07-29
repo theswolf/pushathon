@@ -145,7 +145,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelperLis
 
 	@Override
 	public void onSignInSucceeded() {
-		gameHelper.getGamesClient().doPostSigninOps();
+		//gameHelper.getGamesClient().doPostSigninOps();
 	}
 
 }

@@ -1096,21 +1096,9 @@ public class GameHelper implements GoogleApiClient.ConnectionCallbacks,
              debugLog("Connecting client.");
              mConnecting = true;
              mGoogleApiClient.connect();
-             mGoogleApiClient.registerConnectionCallbacks(new ConnectionCallbacks() {
-				
-				@Override
-				public void onConnectionSuspended(int cause) {
-					 Log.d(TAG,
-		                     "GameHelper: onConnectionSuspended due to cause "+cause);
-					 mListener.onSignInFailed();
-				}
-				
-				@Override
-				public void onConnected(Bundle connectionHint) {
-					executor.execute(futureTask);
-					
-				}
-			});
+             
+             
+             mGoogleApiClient.registerConnectionCallbacks(getCallBacks(executor, futureTask));
              
              try {
 				return getRealGamesClient(futureTask.get());
@@ -1122,6 +1110,31 @@ public class GameHelper implements GoogleApiClient.ConnectionCallbacks,
          }
 		
 		
+		 
+		
+	}
+	
+	private ConnectionCallbacks callbacks;
+	private  ConnectionCallbacks getCallBacks(final ExecutorService executor, final FutureTask<GamesClient> futureTask) {
+		if(callbacks == null ) {
+			callbacks = new ConnectionCallbacks() {
+				
+				@Override
+				public void onConnectionSuspended(int cause) {
+					 Log.d(TAG,
+		                     "GameHelper: onConnectionSuspended due to cause "+cause);
+					 //mListener.onSignInFailed();
+				}
+				
+				@Override
+				public void onConnected(Bundle connectionHint) {
+					executor.execute(futureTask);
+					
+				}
+			};
+		}
+		
+		return callbacks;
 	}
 	
 	private class ClientCallable implements Callable<GamesClient> {

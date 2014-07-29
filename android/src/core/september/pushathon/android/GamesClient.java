@@ -31,11 +31,6 @@ public class GamesClient {
 		return Games.Achievements.getAchievementsIntent(helper.getApiClient());
 	}
 
-	public void doPostSigninOps() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	
 
 }
