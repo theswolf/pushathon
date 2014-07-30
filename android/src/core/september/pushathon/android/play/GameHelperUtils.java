@@ -1,4 +1,7 @@
-package com.google.example.games.basegameutils;
+package core.september.pushathon.android.play;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,12 +15,6 @@ import com.google.android.gms.games.GamesActivityResultCodes;
 
 import core.september.pushathon.android.R;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-/**
- * Created by btco on 2/10/14.
- */
 class GameHelperUtils {
     public static final int R_UNKNOWN_ERROR = 0;
     public static final int R_SIGN_IN_FAILED = 1;
@@ -94,11 +91,11 @@ class GameHelperUtils {
         Log.w("GameHelper", "**** APP NOT CORRECTLY CONFIGURED TO USE GOOGLE PLAY GAME SERVICES");
         Log.w("GameHelper", "**** This is usually caused by one of these reasons:");
         Log.w("GameHelper", "**** (1) Your package name and certificate fingerprint do not match");
-        Log.w("GameHelper", "****     the client ID you registered in Developer Console.");
+        Log.w("GameHelper", "**** the client ID you registered in Developer Console.");
         Log.w("GameHelper", "**** (2) Your App ID was incorrectly entered.");
         Log.w("GameHelper", "**** (3) Your game settings have not been published and you are ");
-        Log.w("GameHelper", "****     trying to log in with an account that is not listed as");
-        Log.w("GameHelper", "****     a test account.");
+        Log.w("GameHelper", "**** trying to log in with an account that is not listed as");
+        Log.w("GameHelper", "**** a test account.");
         Log.w("GameHelper", "****");
         if (ctx == null) {
             Log.w("GameHelper", "*** (no Context, so can't print more debug info)");
@@ -106,9 +103,9 @@ class GameHelperUtils {
         }
 
         Log.w("GameHelper", "**** To help you debug, here is the information about this app");
-        Log.w("GameHelper", "**** Package name         : " + ctx.getPackageName());
+        Log.w("GameHelper", "**** Package name : " + ctx.getPackageName());
         Log.w("GameHelper", "**** Cert SHA1 fingerprint: " + getSHA1CertFingerprint(ctx));
-        Log.w("GameHelper", "**** App ID from          : " + getAppIdFromResource(ctx));
+        Log.w("GameHelper", "**** App ID from : " + getAppIdFromResource(ctx));
         Log.w("GameHelper", "****");
         Log.w("GameHelper", "**** Check that the above information matches your setup in ");
         Log.w("GameHelper", "**** Developer Console. Also, check that you're logging in with the");
@@ -116,7 +113,7 @@ class GameHelperUtils {
         Log.w("GameHelper", "**** your project is not yet published).");
         Log.w("GameHelper", "****");
         Log.w("GameHelper", "**** For more information, refer to the troubleshooting guide:");
-        Log.w("GameHelper", "****   http://developers.google.com/games/services/android/troubleshooting");
+        Log.w("GameHelper", "**** http://developers.google.com/games/services/android/troubleshooting");
     }
 
     static String getAppIdFromResource(Context ctx) {

@@ -1,6 +1,7 @@
 android {
     buildToolsVersion "19.0.3"
     compileSdkVersion 19
+   
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -13,6 +14,21 @@ android {
         }
 
         instrumentTest.setRoot('tests')
+    }
+    
+      signingConfigs {
+        release {
+            storeFile file("/home/christian/git/pushathon/pushathon.keystore")
+            storePassword "th3sw0lf"
+            keyAlias "pushathon"
+            keyPassword "th3sw0lf"
+			}
+		}
+		
+		buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
     }
 }
 

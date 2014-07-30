@@ -2,20 +2,19 @@ package core.september.pushathon.android;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.games.Games;
-import com.google.example.games.basegameutils.GameHelper;
-import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
 
 import core.september.foundation.ActionResolver;
 import core.september.pushathon.PushathonGame;
+import core.september.pushathon.android.play.GameHelper;
+import core.september.pushathon.android.play.GameHelper.GameHelperListener;
 
-public class AndroidLauncher extends AndroidApplication implements GameHelperListener,ActionResolver{
+public class AndroidLauncher extends AndroidApplication implements ActionResolver{
 	
-	protected GameHelper gameHelper;
+	protected GameHelper mHelper;
 	
 	
 	private enum LeadebordsID {
@@ -29,6 +28,8 @@ public class AndroidLauncher extends AndroidApplication implements GameHelperLis
 			return ID;
 		}
 	}
+	
+	protected Payload<Integer> payload;
 	
 	private enum AchievemntsID {
 		MORE_THAN_100("CgkI-OqqhLMdEAIQAg"),	
@@ -63,15 +64,54 @@ public class AndroidLauncher extends AndroidApplication implements GameHelperLis
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
-		gameHelper.enableDebugLog(true);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useAccelerometer = false;
 		config.useCompass = false;
 		
 		initialize(new PushathonGame(this), config);
-		gameHelper.setup(this);
-		gameHelper.setConnectOnStart(false);
+		initHelper(false);
+	}
+	
+	private void initHelper(boolean connectOnStart) {
+	    mHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
+	    mHelper.setConnectOnStart(connectOnStart);
+//	    // enable debug logs (if applicable)
+//	    if (DEBUG_BUILD) {
+	        mHelper.enableDebugLog(true);
+//	    }
+
+	    GameHelperListener listener = new GameHelper.GameHelperListener() {
+	        @Override
+	        public void onSignInSucceeded() {
+	            // handle sign-in succeess
+	        	if(AndroidLauncher.this.payload != null) {
+	        		switch (AndroidLauncher.this.payload.type) {
+					case SUBMIT_SCORE:
+						AndroidLauncher.this.submitScoreGPGS(AndroidLauncher.this.payload.extraData);
+						break;
+					case GET_LEADERBOARD:
+						AndroidLauncher.this.getLeaderboardGPGS();
+						break;
+					case GET_ACHIEVEMENTS:
+						AndroidLauncher.this.getAchievementsGPGS();
+						break;
+					default:
+						break;
+					}
+	        		
+	        		AndroidLauncher.this.payload = null;
+	        	}
+	        }
+	        @Override
+	        public void onSignInFailed() {
+	            // handle sign-in failure (e.g. show Sign In button)
+	        }
+
+	    };
+	    
+	    
+	    mHelper.setup(listener);
+
 	}
 
 
@@ -79,73 +119,120 @@ public class AndroidLauncher extends AndroidApplication implements GameHelperLis
 	@Override
 	public void onStart(){
 		super.onStart();
-		gameHelper.onStart(this);
+		mHelper.onStart(this);
 	}
 
 	@Override
 	public void onStop(){
 		super.onStop();
-		gameHelper.onStop();
+		mHelper.onStop();
 	}
 	
 	@Override
-	public void onActivityResult(int request, int response, Intent data) {
-		super.onActivityResult(request, response, data);
-		gameHelper.onActivityResult(request, response, data);
+	protected void onActivityResult(int request, int response, Intent data) {
+	    super.onActivityResult(request, response, data);
+	    mHelper.onActivityResult(request, response, data);
 	}
+
 	
 	@Override
 	public boolean getSignedInGPGS() {
-		return gameHelper.isSignedIn();
+		return mHelper.isSignedIn();
 	}
 
 	@Override
 	public void loginGPGS() {
-		try {
-			runOnUiThread(new Runnable(){
-				public void run() {
-					gameHelper.beginUserInitiatedSignIn();
-				}
-			});
-		} catch (final Exception ex) {
-			android.util.Log.e(AndroidLauncher.class.getSimpleName(), ex.getMessage(),ex);
-		}
 	}
 
 	@Override
 	public void submitScoreGPGS(int score) {
-		gameHelper.getGamesClient().submitScore(LeadebordsID.TOP_PUSHBOXER.getId(), score);
-		AchievemntsID achievement = AchievemntsID.getAchievemntByScore(score);
-		if(achievement != null) {
-			unlockAchievementGPGS(achievement.getId());
+		submitScoreAsync(score);
+	}
+	
+	private void submitScoreAsync(int score) {
+		if(getSignedInGPGS()) {
+			submitScoreSync(score);
 		}
-		
+		else {
+			mHelper.beginUserInitiatedSignIn();
+			payload = new Payload<Integer>(score, Payload.Type.SUBMIT_SCORE);
+		}
+	}
+	
+	private void submitScoreSync(int score) {
+		Games.Leaderboards.submitScore(mHelper.getApiClient(), LeadebordsID.TOP_PUSHBOXER.getId(), score);
+		AchievemntsID ach = AchievemntsID.getAchievemntByScore(score);
+		if(ach != null) {
+			unlockAchievementGPGS(ach.getId());
+		}
 	}
 	
 	@Override
 	public void unlockAchievementGPGS(String achievementId) {
-		gameHelper.getGamesClient().unlockAchievement(achievementId);
+		Games.Achievements.unlock(mHelper.getApiClient(), achievementId);
 	}
 	
 	@Override
 	public void getLeaderboardGPGS() {
-		startActivityForResult(gameHelper.getGamesClient().getLeaderboardIntent(LeadebordsID.TOP_PUSHBOXER.getId()), 100);
+		getLeaderboardAsync();
+
+	}
+	
+	public void getLeaderboardSync() {
+		startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mHelper.getApiClient(),
+		        LeadebordsID.TOP_PUSHBOXER.getId()), 9002);
+
+	}
+	
+	public void getLeaderboardAsync() {
+		if(getSignedInGPGS()) {
+			getLeaderboardSync();
+		}
+		else {
+			mHelper.beginUserInitiatedSignIn();
+			payload = new Payload<Integer>(null, Payload.Type.GET_LEADERBOARD);
+		}
+
 	}
 
 	@Override
 	public void getAchievementsGPGS() {
-		startActivityForResult(gameHelper.getGamesClient().getAchievementsIntent(), 101);
 	}
 	
-	@Override
-	public void onSignInFailed() {
-		 Toast.makeText(getApplicationContext(), "Error on signing in, please try later...", 
-		    Toast.LENGTH_LONG).show();
-	}
+	public void getAchievementSync() {
+		startActivityForResult(
+				Games.Achievements.getAchievementsIntent(mHelper.getApiClient()),9002);
 
-	@Override
-	public void onSignInSucceeded() {
-		//gameHelper.getGamesClient().doPostSigninOps();
 	}
+	
+	public void getAchievementAsync() {
+		if(getSignedInGPGS()) {
+			getAchievementSync();
+		}
+		else {
+			mHelper.beginUserInitiatedSignIn();
+			payload = new Payload<Integer>(null, Payload.Type.GET_ACHIEVEMENTS);
+		}
 
+	}
+	
+	private static class Payload<T> {
+		public enum Type {
+			SUBMIT_SCORE,
+			GET_LEADERBOARD,
+			GET_ACHIEVEMENTS
+		}
+		
+		public T extraData;
+		public Type type;
+		public Payload(T extraData, Type type) {
+			super();
+			this.extraData = extraData;
+			this.type = type;
+		}
+		
+		
+		
+		
+	}
 }
