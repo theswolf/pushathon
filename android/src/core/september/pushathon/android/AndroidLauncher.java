@@ -62,8 +62,8 @@ public class AndroidLauncher extends AndroidApplication implements ActionResolve
 		
 		public static AchievemntsID getAchievemntByScore(int score) {
 			if(score > scoreLimits[scoreLimits.length-1]) return AchievemntsID.MORE_THAN_300;
+			int counter = 0;			
 			for (int scoreLimit: scoreLimits) {
-				int counter = 0;
 				if(score > scoreLimit && score < scoreLimit + 50) {
 					return AchievemntsID.values()[counter];
 				}
